@@ -2189,6 +2189,12 @@
   .lang__btn:focus-visible{outline:2px solid var(--main-brand);outline-offset:2px}
   html[lang="es"] .step__index::after{content:'PASO ' counter(stepc,decimal-leading-zero)}
   @media (max-width:520px){.nav__actions{gap:6px}.lang__btn{min-width:28px;padding:0 5px}.theme-toggle{padding:0 10px}}
+
+  /* anotação "Frequency" abaixo de Playbook, seta de baixo para cima */
+  .hero__title .accent{position:relative}
+  .hero__hand{right:clamp(0px,1.2vw,18px);top:calc(100% - .06em);transform:rotate(-5deg);align-items:flex-start;white-space:nowrap;font-size:clamp(1.3rem,2.1vw,1.9rem);line-height:1;font-weight:600;letter-spacing:0;text-transform:none;font-style:normal;-webkit-text-fill-color:currentColor;background:none}
+  .hero__hand svg{transform:scaleY(-1);flex:none;margin-top:-4px}
+  @media (min-width:901px){.hero__title{margin-bottom:clamp(14px,2.2vw,30px)}}
 </style>
 </head>
 <body>
@@ -2236,9 +2242,8 @@
         <h1 class="hero__title reveal">
           <span>Design</span>
           <span class="inline-art"><img class="" src="img/robotina/robotina-apresentando.svg" alt="Robotina, mascote do Design System" width="672" height="606"></span>
-          <span class="accent">Playbook</span>
+          <span class="accent">Playbook<span class="hero__hand" aria-hidden="true"><svg viewBox="0 0 38 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M36 3C24 2 12 8 5 20M5 20l1-9M5 20l9-3"/></svg>Frequency</span></span>
         </h1>
-        <span class="hero__hand" aria-hidden="true"><svg viewBox="0 0 38 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M36 3C24 2 12 8 5 20M5 20l1-9M5 20l9-3"/></svg>Frequency</span>
 
         <p class="hero__subtitle reveal">
           Tudo o que você precisa para configurar o ambiente, entender nossos padrões e
