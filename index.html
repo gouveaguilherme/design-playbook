@@ -3,10 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Design Playbook</title>
+<title>Design Playbook · Frequency Design System</title>
+<meta name="description" content="Guia interno do time de Design: setup do Figma, bibliotecas, organização de arquivos e telas, e padrões do Frequency Design System.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#006EFD">
+<meta property="og:title" content="Design Playbook · Frequency Design System">
+<meta property="og:description" content="Setup do Figma, organização de arquivos e padrões de tela do time de Design.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="img/logo-frequency.png">
+<script>
+  /* aplica o tema antes da pintura (evita flash): preferência salva > sistema */
+  (function(){
+    var t=null;
+    try{ t=localStorage.getItem('playbook-theme'); }catch(e){}
+    if(t!=='light'&&t!=='dark'){
+      t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';
+    }
+    document.documentElement.setAttribute('data-theme',t);
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400..700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <style>
   /* ============================================
      DESIGN TOKENS
@@ -584,6 +602,14 @@
     line-height: 1.6;
   }
 
+  .step__placeholder-text p + .step__list { margin-top: .75rem; }
+  .step__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .step__list li { position: relative; padding-left: 1.125rem; }
+  .step__list li::before {
+    content: ''; position: absolute; left: 0; top: .62em;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--main-text);
+  }
+
   .step__media {
     position: relative;
     aspect-ratio: 16 / 10;
@@ -716,10 +742,6 @@
     letter-spacing: 0.04em;
   }
 
-  .step__media--gif:hover .step__media-gif-hint,
-  .step__media--gif.is-playing .step__media-gif-hint {
-    opacity: 0;
-  }
 
   /* Expand affordance */
   .step__media-expand {
@@ -753,7 +775,6 @@
     stroke-linejoin: round;
   }
 
-  .step__media--gif:hover .step__media-expand,
   .step__media--gif:focus-visible .step__media-expand {
     opacity: 1;
     transform: scale(1);
@@ -1275,7 +1296,7 @@
   }
 
   /* ============================================
-     SECTION 03 — Guidelines (cards)
+     Guidelines (cards)
      ============================================ */
   .guidelines {
     display: grid;
@@ -1857,11 +1878,324 @@
      ============================================ */
   .section, .footer { scroll-margin-top: 80px; }
 
+
+  /* ============================================
+     MELHORIAS — hero mobile, CTA, tabela, nav ativa, a11y
+     ============================================ */
+  .hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .hero__eyebrow { max-width: 100%; white-space: normal; }
+
+  .hero__cta {
+    display: inline-flex; align-items: center; gap: .625rem;
+    width: max-content; max-width: 100%;
+    padding: .875rem 1.5rem;
+    border-radius: 999px;
+    background: var(--main-bg-primary);
+    color: #fff;
+    font-family: 'Poppins', sans-serif; font-weight: 500; font-size: .9375rem;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .hero__cta:hover { background: var(--main-hover); transform: translateY(-1px); }
+
+  .nav__links a.is-active { color: var(--main-text); }
+
+  .step__title { position: relative; scroll-margin-top: 96px; }
+  .step__anchor {
+    margin-left: .5rem; opacity: 0; text-decoration: none;
+    color: var(--text-secondary); font-weight: 400;
+    transition: opacity .2s ease;
+  }
+  .step__title:hover .step__anchor, .step__anchor:focus-visible { opacity: 1; }
+  @media (hover: none) { .step__anchor { display: none; } }
+
+  .spacing-table {
+    width: 100%; border-collapse: collapse; margin: .25rem 0 1rem;
+    font-size: .9rem;
+  }
+  .spacing-table th, .spacing-table td {
+    text-align: left; padding: .625rem .75rem;
+    border-bottom: 1px solid var(--border-primary);
+  }
+  .spacing-table th {
+    font-family: 'JetBrains Mono', monospace; font-size: .6875rem;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--text-secondary); font-weight: 500;
+  }
+  .spacing-table td:nth-child(n+2) {
+    font-family: 'JetBrains Mono', monospace; color: var(--main-text); white-space: nowrap;
+  }
+
+  .step__text { min-width: 0; }
+  @media (max-width: 600px) {
+    .spacing-table td:nth-child(n+2) { white-space: normal; }
+    .spacing-table th, .spacing-table td { padding: .5rem .5rem; }
+  }
+
+  .footer__feedback {
+    margin-top: 1.5rem; font-size: .875rem; color: var(--text-secondary);
+  }
+  .footer__feedback a, .contact-card__list a { color: inherit; text-decoration-color: var(--main-text); }
+  .footer__feedback a:hover, .contact-card__list a:hover { color: var(--main-text); }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible, [role="button"]:focus-visible {
+    outline: 2px solid var(--main-text); outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* ============================================================
+     V7 — Direção editorial (referência: town.com)
+     Fundo "papel", tipografia grande, nav flutuante em caixas com borda,
+     personagem ilustrado por seção (Robotina), títulos "grudados" (sticky story),
+     manifesto com texto que se preenche no scroll, rodapé escuro.
+     Somente tokens do Frequency DS.
+     ============================================================ */
+  :root { --ds-3xs: 4px; --ds-2xs: 8px; --ds-xs: 16px; --ds-s: 24px; --ds-heading: 'Poppins', sans-serif; --ds-body: 'IBM Plex Sans', sans-serif; --ds-hand: 'Caveat', 'Poppins', cursive; }
+  [data-theme="light"] { --paper: var(--bg-secondary); --card: var(--bg-primary); --ink-panel: #101010; --mark: var(--main-bg-secondary); }
+  [data-theme="dark"]  { --paper: var(--bg-primary);   --card: var(--bg-secondary); --ink-panel: color-mix(in srgb, var(--main-bg-secondary) 60%, #0a0a0a); --mark: var(--main-bg-secondary); }
+  html { scroll-behavior: smooth; }
+  html, body { background: var(--paper); }
+  body { background-image: none; }
+  .container { max-width: 1320px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* ---------- barra de aviso ---------- */
+  .topbar { background: var(--ink-panel); color: #fff; text-align: center; padding: 9px 16px; font-family: var(--ds-body); font-size: 13px; letter-spacing: .01em; }
+
+  /* ---------- nav flutuante em caixas ---------- */
+  .nav { position: sticky; top: 12px; z-index: 100; background: none; border: 0; backdrop-filter: none; margin-top: 12px; }
+  .nav__inner { padding: 0; gap: 8px; justify-content: flex-start; }
+  .nav__brand, .nav__links, .theme-toggle { background: var(--card); border: 1px solid var(--border-secondary); border-radius: var(--ds-2xs); box-shadow: 0 1px 0 rgba(0,0,0,.02); }
+  .nav__brand { padding: 6px 14px 6px 8px; }
+  .nav__links { display: flex; gap: 2px; padding: 4px; }
+  .nav__links a { padding: 7px 14px; border-radius: 6px; font-family: var(--ds-heading); font-weight: 500; font-size: 13px; color: var(--text-primary); }
+  .nav__links a::before { display: none; }
+  .nav__links a:hover, .nav__links a.is-active { background: var(--paper); color: var(--text-primary); }
+  .nav__actions { margin-left: auto; }
+  .theme-toggle { height: 40px; padding: 0 14px; }
+  @media (max-width: 760px) { .nav__links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(48px, 8vw, 120px) 0 clamp(24px, 4vw, 56px); overflow: visible; text-align: center; }
+  .hero__deco { display: none; }
+  .hero__inner { display: flex; flex-direction: column; align-items: center; gap: clamp(20px, 2.6vw, 32px); position: relative; }
+  .hero__eyebrow { display: none; }
+  .hero__title { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .04em .24em;
+    font-family: var(--ds-heading); font-weight: 600; font-size: clamp(3rem, 7.8vw, 7rem); line-height: 1; letter-spacing: -.05em; flex-wrap: nowrap; }
+  @media (max-width: 640px) { .hero__title { flex-wrap: wrap; } }
+  body::before, body::after { display: none !important; }
+  .hero__title .accent { color: var(--text-primary); }
+  .inline-art { position: relative; display: inline-grid; place-items: end center; width: 1.5em; height: 1.02em; overflow: hidden; border-radius: .18em;
+    background: var(--mark); transform: rotate(-3deg); transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+  .inline-art:hover { transform: rotate(2deg) scale(1.04); }
+  .inline-art img { height: 118%; width: auto; margin-bottom: -7%; }
+  .hero__hand { position: absolute; right: clamp(0px, 6vw, 90px); top: clamp(-10px, 2vw, 20px); font-family: var(--ds-hand); font-size: clamp(1.1rem, 1.8vw, 1.6rem); color: var(--main-text); transform: rotate(6deg); display: flex; align-items: center; gap: 6px; }
+  .hero__hand svg { width: 38px; height: 26px; }
+  @media (max-width: 900px) { .hero__hand { display: none; } }
+  .hero__subtitle { max-width: 38rem; font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.5; color: var(--text-secondary); }
+  .hero__subtitle em { font-style: normal !important; color: var(--text-primary) !important; padding: 0 .22em; background: linear-gradient(transparent 14%, var(--mark) 14% 90%, transparent 90%); }
+  .hero__quote { display: none; }
+  .hero__meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: none; margin: 0; background: none; border: 0; border-radius: 0; overflow: visible; }
+  .hero__meta-item { flex-direction: row; align-items: center; gap: 8px; padding: 5px 10px; background: var(--card); border: 1px solid var(--border-secondary); border-radius: var(--ds-3xs); }
+  .hero__meta-label { font-family: var(--ds-body); font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--text-secondary); }
+  .hero__meta-value { font-family: var(--ds-heading); font-weight: 600; font-size: 12px; }
+  .hero__cta { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 var(--ds-s); border-radius: var(--ds-s); background: var(--main-bg-primary); color: #fff;
+    font-family: var(--ds-heading); font-weight: 600; font-size: 15px; box-shadow: none; }
+  .hero__cta:hover { background: var(--main-hover); transform: none; }
+
+  /* ---------- manifesto (preenche no scroll) ---------- */
+  .manifesto { padding: clamp(56px, 9vw, 140px) 0 clamp(40px, 7vw, 100px); }
+  .manifesto__text { max-width: 900px; margin: 0 auto; text-align: center; font-family: var(--ds-heading); font-weight: 500; font-size: clamp(1.7rem, 3.6vw, 3rem); line-height: 1.22; letter-spacing: -.025em; }
+  .manifesto__text .w { color: color-mix(in srgb, var(--text-primary) 20%, transparent); transition: color .25s ease; }
+  .manifesto__text .w.on { color: var(--text-primary); }
+
+  /* ---------- seções: história com coluna "grudada" ---------- */
+  .section { padding: clamp(56px, 9vw, 120px) 0; border-top: 1px solid var(--border-secondary); }
+  .section > .container { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .story__side { display: flex; flex-direction: column; gap: 24px; }
+  .section__head { display: block; padding: 0; margin: 0; }
+  .section__head > div { display: block; }
+  .section__number { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 20px; padding: 6px 10px; border: 1px solid var(--border-primary); border-radius: var(--ds-3xs); background: var(--card);
+    font-family: var(--ds-heading); font-weight: 600; font-size: 12px; letter-spacing: .5px; color: var(--text-primary); }
+  .section__number-line { display: none; }
+  .section__number-marker { color: var(--main-text); font-family: inherit; }
+  .section__title { font-family: var(--ds-heading); font-weight: 600; font-size: clamp(2.3rem, 4.6vw, 4rem); line-height: 1.03; letter-spacing: -.04em; margin: 0 0 16px; }
+  .section__title em { font-style: normal; color: var(--main-text); }
+  .section__intro { max-width: 30rem; font-size: 1.05rem; line-height: 1.55; color: var(--text-secondary); }
+  .section__bot { width: clamp(120px, 14vw, 190px); height: auto; margin-top: 8px; align-self: flex-start; }
+  .story__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .story__chip { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border-primary); border-radius: var(--ds-3xs); background: var(--card);
+    font-family: var(--ds-heading); font-weight: 500; font-size: 13px; color: var(--text-primary); text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
+  .story__chip:hover { border-color: var(--text-primary); }
+  .story__chip.is-active { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
+  @media (min-width: 1024px) {
+    .section > .container { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(48px, 6vw, 96px); align-items: start; }
+    #organizacao > .container { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+    #organizacao .story__side { order: 2; }
+    .story__side { position: sticky; top: 92px; }
+  }
+
+  /* ---------- steps como cartões editoriais ---------- */
+  .story__main { min-width: 0; }
+  .steps { display: flex; flex-direction: column; gap: 20px; }
+  .step { display: flex !important; flex-direction: column; gap: 20px; padding: clamp(18px, 2.4vw, 32px); background: var(--card); border: 1px solid var(--border-secondary); border-radius: var(--ds-xs); box-shadow: none; scroll-margin-top: 100px; }
+  .step__index { display: inline-flex; align-items: center; gap: 8px; width: max-content; min-height: 24px; padding: 4px 8px; border-radius: var(--ds-3xs); background: var(--main-bg-secondary); color: var(--text-primary);
+    font-family: var(--ds-heading); font-weight: 600; font-size: 10px; line-height: 14px; letter-spacing: .15px; text-transform: uppercase; }
+  .step__index::before { display: none; }
+  .step__title { font-family: var(--ds-heading); font-weight: 600; font-size: clamp(1.4rem, 2.2vw, 1.9rem); letter-spacing: -.025em; }
+  .step__placeholder-text { border: 0; padding: 0; font-family: var(--ds-body); font-size: 1rem; line-height: 1.6; color: var(--text-secondary); }
+  .step__placeholder-text em, .step em { font-style: normal !important; font-weight: 600; color: var(--text-primary) !important; padding: 0 .15em; background: linear-gradient(transparent 62%, var(--mark) 62%); }
+  .step__list li::before { background: var(--main-text); }
+  .step__media { border-radius: var(--ds-2xs); border: 1px solid var(--border-secondary); box-shadow: none; }
+  .callout { margin-top: 20px; border-radius: var(--ds-xs); }
+  .spacing-table th { font-family: var(--ds-heading); font-weight: 600; font-size: 12px; letter-spacing: 1.5px; }
+
+  /* ---------- rodapé escuro: FAQ + contato ---------- */
+  .footer { margin: 0 12px 12px; padding: clamp(56px, 8vw, 110px) 0 0; border: 0; border-radius: clamp(20px, 3vw, 32px); background: var(--ink-panel); color: #fff; }
+  .footer > .container { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; padding-bottom: 0; }
+  .footer__grid { display: contents; }
+  .footer__head { display: block; margin: 0; }
+  .footer__eyebrow { display: inline-flex; margin-bottom: 20px; padding: 6px 10px; border: 1px solid rgba(255,255,255,.3); border-radius: var(--ds-3xs); background: transparent; color: #fff;
+    font-family: var(--ds-heading); font-weight: 600; font-size: 12px; letter-spacing: .5px; text-transform: none; }
+  .footer__title { font-family: var(--ds-heading); font-weight: 600; font-size: clamp(2.3rem, 4.6vw, 4rem); line-height: 1.03; letter-spacing: -.04em; color: #fff; max-width: 12ch; }
+  .footer__title em { font-style: normal; color: var(--main-text); }
+  .faq { border: 0; gap: 0; }
+  .faq__item { background: none; border: 0; border-top: 1px solid rgba(255,255,255,.22); border-radius: 0; padding: 0; outline: 0; }
+  .faq__item:last-child { border-bottom: 1px solid rgba(255,255,255,.22); }
+  .faq__btn { padding: 22px 0; min-height: 0; font-family: var(--ds-heading); font-weight: 500; font-size: 1.15rem; line-height: 1.35; color: #fff; gap: 16px; }
+  .faq__btn:hover { color: var(--main-text); }
+  .faq__icon { width: 24px; height: 24px; border: 0; background: none; border-radius: 0; }
+  .faq__icon::before, .faq__icon::after, .faq__item[open] .faq__icon::before, .faq__item[open] .faq__icon::after { background: #fff; }
+  .faq__item[open] .faq__icon { background: none; }
+  .faq__answer { padding: 0 0 24px; max-width: 46rem; font-size: 1rem; line-height: 1.6; color: rgba(255,255,255,.75); }
+  .faq__answer *, .faq__answer a { color: inherit; }
+  .faq__answer em, .faq__answer strong { color: #fff; font-style: normal; }
+  .contact-card { position: relative; overflow: hidden; background: transparent; border: 1px solid rgba(255,255,255,.22); border-radius: var(--ds-xs); padding: var(--ds-s); color: #fff; box-shadow: none; }
+  .contact-card::before { display: none; }
+  .contact-card__bot { position: absolute; top: 4px; right: 8px; width: 110px; height: auto; pointer-events: none; }
+  .contact-card__label { color: rgba(255,255,255,.65); }
+  .contact-card__title { color: #fff; font-family: var(--ds-heading); font-weight: 600; max-width: calc(100% - 100px); }
+  .contact-card__desc, .contact-card__list-text span, .contact-card__list-text span a { color: rgba(255,255,255,.75); }
+  .contact-card__list-text strong { color: #fff; font-family: var(--ds-heading); font-weight: 600; }
+  .contact-card__list-icon { background: rgba(255,255,255,.12); border-radius: var(--ds-2xs); }
+  .footer__feedback { color: rgba(255,255,255,.75); text-align: left; }
+  .footer__feedback .code-chip { background: rgba(255,255,255,.14); color: #fff; border-color: transparent; }
+  .endnav { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: clamp(40px, 6vw, 88px) 0; text-align: center; }
+  .endnav a { font-family: var(--ds-heading); font-weight: 600; font-size: clamp(2rem, 6vw, 4.6rem); line-height: 1.08; letter-spacing: -.04em; color: #fff; text-decoration: none; transition: color .2s; }
+  .endnav a:hover { color: var(--main-text); }
+  .bottom-strip { border-top: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.65); padding: 20px 0 28px; margin: 0; }
+  @media (min-width: 1024px) {
+    .footer > .container { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "head faq" "contact faq" "feedback feedback" "endnav endnav" "strip strip"; gap: 32px clamp(48px, 6vw, 96px); align-items: start; }
+    .footer__head { grid-area: head; }
+    .faq { grid-area: faq; grid-row: 1 / span 2; }
+    .contact-card { grid-area: contact; align-self: end; }
+    .footer__feedback { grid-area: feedback; }
+    .endnav { grid-area: endnav; }
+    .bottom-strip { grid-area: strip; }
+  }
+
+  /* V7 — acertos */
+  .step { align-items: stretch !important; }
+  .step__text { display: flex; flex-direction: column; gap: 14px; }
+  .step__media { width: 100%; }
+  .section__number { width: max-content; max-width: 100%; line-height: 1; }
+  .section__number span, .section__number-marker { font-size: 12px !important; line-height: 1 !important; font-family: var(--ds-heading) !important; }
+  .step__placeholder-text em, .step em { background: none; padding: 0; color: var(--main-text) !important; }
+
+  /* ===== Capas dos GIFs (estado parado) ===== */
+  .step__media--gif{
+    --cv-bg:var(--bg-secondary); --cv-card:var(--bg-primary); --cv-line:var(--border-primary);
+    --cv-mute:var(--border-primary); --cv-ink:var(--text-primary); --cv-ink2:#14161c;
+    --cv-brand:var(--main-bg-primary); --cv-brandsoft:var(--main-bg-secondary);
+    overflow:hidden;
+  }
+  .step__cover{position:absolute;inset:0;z-index:0;background:
+    radial-gradient(120% 90% at 15% 0%,color-mix(in srgb,var(--main-bg-primary) 14%,transparent),transparent 60%),
+    var(--bg-secondary);transition:opacity .2s;pointer-events:none}
+  .step__cover::before{content:"";position:absolute;inset:0;opacity:.5;
+    background-image:radial-gradient(var(--border-primary) 1px,transparent 1px);background-size:16px 16px}
+  .step__cover-art{position:absolute;inset:0;width:100%;height:100%;padding:14% 6% 10%}
+  .step__cover-kicker{position:absolute;left:.875rem;top:.875rem;font:600 .68rem/1 'JetBrains Mono',monospace;letter-spacing:.06em;
+    color:var(--main-text);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:999px;padding:.35rem .6rem}
+  .step__cover-bot{position:absolute;right:2%;bottom:0;width:clamp(64px,22%,120px);height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18))}
+    /* dica de play vira uma pílula no canto inferior esquerdo, sem cobrir a ilustração */
+  .step__media--gif .step__media-gif-hint{inset:auto auto .875rem .875rem;flex-direction:row;gap:.6rem;padding:.4rem .75rem .4rem .4rem;
+    background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:999px;z-index:2}
+  .step__media--gif .step__media-gif-hint__icon{width:28px;height:28px}
+  .step__media--gif .step__media-gif-hint__icon svg{width:11px;height:11px}
+  .step__media--gif .step__media-gif-hint__text{align-items:flex-start;gap:0}
+  .step__media--gif .step__media-gif-hint__label{font-size:.72rem}
+  .step__media--gif .step__media-gif-hint__sub{display:none}
+  @media (max-width:520px){.step__media--gif .step__media-gif-hint__label{font-size:.66rem}.step__cover-bot{width:26%}}
+
+  /* ===== Tabs: animação de clique ===== */
+  .story__chips{position:relative}
+  .story__chip{position:relative;box-shadow:0 0 0 0 var(--main-bg-primary);transition:background .2s,color .2s,border-color .2s,box-shadow .2s}
+  .story__chip.is-active{box-shadow:0 3px 0 0 var(--main-bg-primary)}
+  .story__chip.is-click{animation:chipPress .5s cubic-bezier(.3,.7,.2,1)}
+  .story__chip.is-click::after{content:"";position:absolute;inset:-1px;border:2px solid var(--main-bg-primary);border-radius:inherit;pointer-events:none;animation:chipRing .6s ease-out forwards}
+  @keyframes chipPress{
+    0%{transform:translateY(0) scale(1)}
+    22%{transform:translateY(3px) scale(.94);box-shadow:0 0 0 0 var(--main-bg-primary)}
+    55%{transform:translateY(-2px) scale(1.04);box-shadow:0 4px 0 0 var(--main-bg-primary)}
+    78%{transform:translateY(.5px) scale(.99)}
+    100%{transform:translateY(0) scale(1)}
+  }
+  @keyframes chipRing{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.35,1.9);opacity:0}}
+  @media (prefers-reduced-motion:reduce){.story__chip.is-click,.story__chip.is-click::after{animation:none}}
+
+  /* texto/título sempre antes do GIF, em todos os steps */
+  .step--reverse .step__text,.step--reverse .step__media,.step .step__text,.step .step__media{order:0!important}
+  .step .step__text{order:0!important}.step .step__media{order:1!important}
+
+  /* ===== Hover do botão "Ver exemplo" ===== */
+  .step__media--gif .step__media-gif-hint{pointer-events:auto;cursor:pointer;
+    transition:background .25s,border-color .25s,transform .25s cubic-bezier(.3,.7,.2,1),box-shadow .25s}
+  .step__media--gif .step__media-gif-hint__label{transition:color .25s}
+  .step__media--gif .step__media-gif-hint__icon{transition:background .25s,transform .3s cubic-bezier(.3,.7,.2,1)}
+  .step__media--gif .step__media-gif-hint__icon svg polygon{transition:fill .25s}
+  .step__media--gif .step__media-gif-hint:hover,
+  .step__media--gif:focus-visible .step__media-gif-hint{background:var(--main-bg-primary);border-color:var(--main-bg-primary);transform:translateY(-2px);
+    box-shadow:0 8px 20px -6px color-mix(in srgb,var(--main-bg-primary) 70%,transparent)}
+  .step__media--gif .step__media-gif-hint:hover .step__media-gif-hint__label,
+  .step__media--gif:focus-visible .step__media-gif-hint__label{color:#fff}
+  .step__media--gif .step__media-gif-hint:hover .step__media-gif-hint__icon,
+  .step__media--gif:focus-visible .step__media-gif-hint__icon{background:#fff;transform:scale(1.12)}
+  .step__media--gif .step__media-gif-hint:hover .step__media-gif-hint__icon svg polygon,
+  .step__media--gif:focus-visible .step__media-gif-hint__icon svg polygon{fill:var(--main-bg-primary)}
+  .step__media--gif .step__media-gif-hint:active{transform:translateY(0) scale(.97)}
+
+  /* ===== Header: blur com gradiente ao rolar ===== */
+  .nav::before,.nav::after{content:"";position:absolute;left:0;right:0;top:-12px;height:calc(100% + 56px);pointer-events:none;z-index:-1;opacity:0;transition:opacity .35s ease}
+  .nav::before{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 45%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0%,#000 45%,transparent 100%)}
+  .nav::after{background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 92%,transparent) 0%,color-mix(in srgb,var(--paper) 60%,transparent) 50%,transparent 100%)}
+  .nav.is-scrolled::before,.nav.is-scrolled::after{opacity:1}
+
+  /* ===== Seletor de idioma ===== */
+  .lang{display:inline-flex;align-items:center;gap:2px;height:40px;padding:4px;background:var(--card);border:1px solid var(--border-secondary);border-radius:var(--ds-2xs)}
+  .lang__btn{height:100%;min-width:34px;padding:0 8px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--text-secondary);transition:background .2s,color .2s}
+  .lang__btn:hover{color:var(--text-primary);background:var(--paper)}
+  .lang__btn.is-active{background:var(--text-primary);color:var(--bg-primary)}
+  .lang__btn:focus-visible{outline:2px solid var(--main-brand);outline-offset:2px}
+  html[lang="es"] .step__index::after{content:'PASO ' counter(stepc,decimal-leading-zero)}
+  @media (max-width:520px){.nav__actions{gap:6px}.lang__btn{min-width:28px;padding:0 5px}.theme-toggle{padding:0 10px}}
 </style>
 </head>
 <body>
 
   <!-- ============== NAV ============== -->
+  <div class="topbar">Documentação interna · Atualizado em nov/2026</div>
+
   <nav class="nav">
     <div class="container">
       <div class="nav__inner">
@@ -1878,6 +2212,11 @@
           <a href="#faq">FAQ</a>
         </div>
         <div class="nav__actions">
+          <div class="lang" role="group" aria-label="Idioma">
+            <button type="button" class="lang__btn is-active" data-lang="pt" aria-pressed="true" lang="pt">PT</button>
+            <button type="button" class="lang__btn" data-lang="es" aria-pressed="false" lang="es">ES</button>
+            <button type="button" class="lang__btn" data-lang="en" aria-pressed="false" lang="en">EN</button>
+          </div>
           <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
             <span class="theme-toggle__dot"></span>
             <span id="themeLabel">DARK</span>
@@ -1892,11 +2231,14 @@
     <div class="hero__deco" aria-hidden="true"></div>
     <div class="container">
       <div class="hero__inner">
-        <span class="hero__eyebrow reveal">Documentação interna · Atualizado em set/2026</span>
+        <span class="hero__eyebrow reveal">Documentação interna · Atualizado em nov/2026</span>
 
         <h1 class="hero__title reveal">
-          Design Playbook
+          <span>Design</span>
+          <span class="inline-art"><img class="" src="img/robotina/apresentando.svg" alt="Robotina, mascote do Design System" width="672" height="606"></span>
+          <span class="accent">Playbook</span>
         </h1>
+        <span class="hero__hand" aria-hidden="true"><svg viewBox="0 0 38 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M36 3C24 2 12 8 5 20M5 20l1-9M5 20l9-3"/></svg>Frequency</span>
 
         <p class="hero__subtitle reveal">
           Tudo o que você precisa para configurar o ambiente, entender nossos padrões e
@@ -1904,15 +2246,10 @@
           Um único lugar para alinhar ferramentas, nomenclatura e processo.
         </p>
 
-        <blockquote class="hero__quote reveal">
-          “Design é colaboração com método — bonito por consequência,
-          consistente por princípio.”
-        </blockquote>
-
         <div class="hero__meta reveal">
           <div class="hero__meta-item">
             <span class="hero__meta-label">Tempo de leitura</span>
-            <span class="hero__meta-value">~12 minutos</span>
+            <span class="hero__meta-value">~5 minutos</span>
           </div>
           <div class="hero__meta-item">
             <span class="hero__meta-label">Para</span>
@@ -1927,29 +2264,42 @@
             <span class="hero__meta-value" style="color:var(--success-text)">● Em produção</span>
           </div> -->
         </div>
+
+        <a class="hero__cta reveal" href="#setup">Começar pelo setup <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </header>
 
-  <!-- ============== SECTION 02 — SETUP FIGMA ============== -->
+  <!-- ============== MANIFESTO ============== -->
+  <section class="manifesto" aria-label="Princípio">
+    <div class="container">
+      <blockquote class="manifesto__text">“Design é colaboração com método — bonito por consequência, consistente por princípio.”</blockquote>
+    </div>
+  </section>
+
+  <!-- ============== SECTION 01 — SETUP FIGMA ============== -->
   <section class="section" id="setup">
     <div class="container">
+      <div class="story__side">
       <div class="section__head reveal">
         <div class="section__number">
           <span>SEÇÃO</span>
-          <span class="section__number-marker">02</span>
+          <span class="section__number-marker">01</span>
           <span class="section__number-line"></span>
         </div>
         <div>
           <h2 class="section__title">Setup do <em>Figma</em> — do zero ao dia 1.</h2>
           <p class="section__intro">
-            Um guia prático e enxuto para deixar seu Figma pronto para o trabalho do time.
-            Siga os passos abaixo na ordem — em menos de 20 minutos você estará alinhado com a configuração
-            que usamos diariamente.
+            Deixe seu Figma pronto para o trabalho do time.
+            Siga os passos na ordem — leva menos de 20 minutos.
           </p>
         </div>
       </div>
 
+      <img class="section__bot" src="img/robotina/apontando.svg" alt="" width="672" height="606">
+      </div>
+
+      <div class="story__main">
       <div class="steps">
         <!-- STEP 01 -->
         <article class="step reveal">
@@ -1957,26 +2307,23 @@
             <span class="step__index"></span>
             <h3 class="step__title">Bibliotecas</h3>
             <div class="step__placeholder-text">
-              <p>
-                Vá até a aba “Assets” e verifique se as bibliotecas estão ativas. Caso não estejam, ative sempre as bibliotecas Frequency <em style="font-style:italic;color:var(--main-text)">Foundation</em> e Frequency <em style="font-style:italic;color:var(--main-text)">Assets</em>.
-              </p>
-              <br/> 
-              <p>
-                Além disso, ative também a biblioteca correspondente ao tipo de projeto em que estiver trabalhando: <br/>
-                <em style="font-style:italic;color:var(--main-text)">* Web Components</em> para projetos web; <br/>
-                <em style="font-style:italic;color:var(--main-text)">* Native Components</em> para projetos nativos, como TV, Roku ou Mobile.
-              </p>
+              <p>Na aba <em style="font-style:italic;color:var(--main-text)">Assets</em>, confirme que estas bibliotecas estão ativas:</p>
+              <ul class="step__list">
+                <li><em style="font-style:italic;color:var(--main-text)">Frequency Foundation</em> e <em style="font-style:italic;color:var(--main-text)">Frequency Assets</em> (sempre)</li>
+                <li><em style="font-style:italic;color:var(--main-text)">Web Components</em> para projetos web ou <em style="font-style:italic;color:var(--main-text)">Native Components</em> para projetos nativos (TV, Roku ou Mobile)</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/setup-01a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Bibliotecas" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="70" y="28" width="200" height="150" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><text x="84" y="48" font-size="9" font-weight="700" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Assets · Bibliotecas</text><rect x="80" y="62" width="180" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="90" y="76.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Frequency Foundation</text><rect x="230" y="67" width="22" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /><circle cx="246" cy="73" r="4.5" fill="#fff"/><rect x="80" y="90" width="180" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="90" y="104.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Frequency Assets</text><rect x="230" y="95" width="22" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /><circle cx="246" cy="101" r="4.5" fill="#fff"/><rect x="80" y="118" width="180" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="90" y="132.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Web Components</text><rect x="230" y="123" width="22" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /><circle cx="246" cy="129" r="4.5" fill="#fff"/><rect x="80" y="146" width="180" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="90" y="160.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Native Components</text><rect x="230" y="151" width="22" height="12" rx="6" fill="var(--cv-mute)" stroke="none" /><circle cx="236" cy="157" r="4.5" fill="#fff"/></svg><span class="step__cover-kicker">SETUP FIGMA · 01</span><img class="step__cover-bot" src="img/robotina/observando.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -1989,25 +2336,24 @@
             <span class="step__index"></span>
             <h3 class="step__title">Organizando as páginas</h3>
             <div class="step__placeholder-text">
-              <p>
-                Antes de começar a desenhar as telas, é necessário configurar e organizar as páginas do arquivo. A primeira página deve ser sempre a capa do projeto. Caso o arquivo ainda não possua uma capa, acesse a aba <em style="font-style:italic;color:var(--main-text)">Assets</em>, adicione o componente <em style="font-style:italic;color:var(--main-text)">Cover</em> e preencha as informações utilizando o padrão: <em style="font-style:italic;color:var(--main-text)">[Nome do projeto] + [Nome da feature]</em>.
-              </p>
-              <br/>
-              <p>
-                Após isso, crie as páginas que serão utilizadas no fluxo de trabalho. Em cada página com fluxos e telas, aplique os temas corretos do projeto. 
-                Por exemplo, ao trabalhar em uma tela da SKY no modo dark: selecione primeiro o tema <em style="font-style:italic;color:var(--main-text)">Company-Type = Sky-Products</em>; em seguida, aplique o tema <em style="font-style:italic;color:var(--main-text)">Sky-Products = SKY Dark</em>.
-              </p>
+              <p>A primeira página do arquivo é sempre a <em style="font-style:italic;color:var(--main-text)">capa</em>.</p>
+              <ul class="step__list">
+                <li>Sem capa? Em <em style="font-style:italic;color:var(--main-text)">Assets</em>, adicione o componente <em style="font-style:italic;color:var(--main-text)">Cover</em> e preencha: <em style="font-style:italic;color:var(--main-text)">[Nome do projeto] + [Nome da feature]</em></li>
+                <li>Crie as demais páginas do fluxo de trabalho.</li>
+                <li>Em cada página com telas, aplique os temas do projeto. Ex.: SKY dark → <em style="font-style:italic;color:var(--main-text)">Company-Type = Sky-Products</em>, depois <em style="font-style:italic;color:var(--main-text)">Sky-Products = SKY Dark</em></li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/setup-02a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Organizando as páginas" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="60" y="26" width="150" height="156" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><text x="74" y="46" font-size="9" font-weight="700" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Páginas</text><rect x="70" y="56" width="130" height="22" rx="5" fill="var(--cv-brand)" stroke="none" /><text x="80" y="70.5" font-size="8.5" font-weight="600" fill="#fff" font-family="IBM Plex Sans,sans-serif">Capa</text><rect x="70" y="84" width="130" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="80" y="98.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Fluxo · Home</text><rect x="70" y="112" width="130" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="80" y="126.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Fluxo · Checkout</text><rect x="70" y="140" width="130" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><text x="80" y="154.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Componentes</text><rect x="228" y="40" width="112" height="62" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="240" y="54" width="60" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="240" y="68" width="86" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="240" y="78" width="70" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="240" y="88" width="36" height="8" rx="4" fill="var(--cv-brand)" stroke="none" /><rect x="228" y="112" width="112" height="62" rx="10" fill="var(--cv-ink2)" stroke="none" /><rect x="240" y="126" width="60" height="6" rx="2.5" fill="#fff"/><rect x="240" y="140" width="86" height="5" rx="2.5" fill="rgba(255,255,255,.35)"/><rect x="240" y="150" width="70" height="5" rx="2.5" fill="rgba(255,255,255,.35)"/></svg><span class="step__cover-kicker">SETUP FIGMA · 02</span><img class="step__cover-bot" src="img/robotina/apresentando.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2020,23 +2366,23 @@
             <span class="step__index"></span>
             <h3 class="step__title">Organizando a section</h3>
             <div class="step__placeholder-text">
-              <p>É fundamental que as telas dos fluxos estejam sempre agrupadas dentro de uma <em style="font-style:italic;color:var(--main-text)">section</em>. Cada section deve receber um nome condizente com o fluxo que engloba. Além disso, para garantir uma melhor oganização visual, devem ser utilizados os componentes de <em style="font-style:italic;color:var(--main-text)">Templates</em> da biblioteca de <em style="font-style:italic;color:var(--main-text)">Assets</em>.
-              </p>
-              <br/>
-              <p>
-               Inclua no <em style="font-style:italic;color:var(--main-text)">Files-Header</em> da section o nome do fluxo e um overview sobre o que se trata e algumas tags indicando a data do último update, se o arquivo foi revisado e se os simbolos foram aplicados.
-              </p> 
+              <p>Agrupe as telas de cada fluxo em uma <em style="font-style:italic;color:var(--main-text)">section</em>, nomeada conforme o fluxo.</p>
+              <ul class="step__list">
+                <li>Use os componentes de <em style="font-style:italic;color:var(--main-text)">Templates</em> da biblioteca <em style="font-style:italic;color:var(--main-text)">Assets</em>.</li>
+                <li>No <em style="font-style:italic;color:var(--main-text)">Files-Header</em>, informe o nome do fluxo, um overview e as tags: data do último update, arquivo revisado e símbolos aplicados.</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/setup-03a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Organizando a section" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="40" y="22" width="320" height="166" rx="12" fill="none" stroke="var(--cv-brand)" stroke-dasharray="5 4" stroke-width="1.5"/><text x="50" y="18" font-size="8.5" font-weight="700" fill="var(--cv-brand)" font-family="IBM Plex Sans,sans-serif">Section · Fluxo Home</text><rect x="54" y="34" width="292" height="40" rx="8" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="66" y="46" width="90" height="7" rx="2.5" fill="var(--cv-ink)"/><rect x="66" y="58" width="150" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="250" y="44" width="24" height="10" rx="5" fill="var(--cv-brandsoft)" stroke="none" /><rect x="278" y="44" width="24" height="10" rx="5" fill="var(--cv-brandsoft)" stroke="none" /><rect x="306" y="44" width="28" height="10" rx="5" fill="var(--cv-brandsoft)" stroke="none" /><rect x="54" y="86" width="92" height="88" rx="8" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="62" y="94" width="76" height="44" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="62" y="146" width="50" height="5" rx="2.5" fill="var(--cv-ink)"/><rect x="62" y="158" width="70" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="154" y="86" width="92" height="88" rx="8" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="162" y="94" width="76" height="44" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="162" y="146" width="50" height="5" rx="2.5" fill="var(--cv-ink)"/><rect x="162" y="158" width="70" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="254" y="86" width="92" height="88" rx="8" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="262" y="94" width="76" height="44" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="262" y="146" width="50" height="5" rx="2.5" fill="var(--cv-ink)"/><rect x="262" y="158" width="70" height="5" rx="2.5" fill="var(--cv-mute)"/></svg><span class="step__cover-kicker">SETUP FIGMA · 03</span><img class="step__cover-bot" src="img/robotina/caixa.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2049,20 +2395,24 @@
             <span class="step__index"></span>
             <h3 class="step__title">Organizando as telas</h3>
             <div class="step__placeholder-text">
-              <p>
-                As telas devem ser organizadas em um bloco com o asset <em style="font-style:italic;color:var(--main-text)">Files-Header</em> na sua variação de Page + <em style="font-style:italic;color:var(--main-text)">Note-Rules</em> + <em style="font-style:italic;color:var(--main-text)">Telas Web e Mobile</em>. O elemento de titulo da página deve ficar acima das telas do bloco delimitando a organização. A esquerda devem ficar as notas, podendo ser notas sobre a tela, sobre regras específicas da tela e notas indicando os componentes utilizados na tela. A direita das notas devemos ter uma tela web e ao lado a mesma tela na variação mobile.
-              </p>
+              <p>Cada bloco segue a estrutura <em style="font-style:italic;color:var(--main-text)">Files-Header</em> (variação Page) + <em style="font-style:italic;color:var(--main-text)">Note-Rules</em> + <em style="font-style:italic;color:var(--main-text)">Telas Web e Mobile</em>.</p>
+              <ul class="step__list">
+                <li>O título da página fica acima das telas do bloco.</li>
+                <li>À esquerda, as notas: sobre a tela, regras específicas e componentes utilizados.</li>
+                <li>À direita das notas, a tela web e, ao lado, a mesma tela em mobile.</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/setup-04a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Organizando as telas" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="34" y="26" width="86" height="150" rx="8" fill="var(--cv-card)" stroke="var(--cv-line)" /><text x="44" y="44" font-size="8.5" font-weight="700" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Notas</text><rect x="44" y="56" width="66" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="44" y="66" width="54" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="44" y="82" width="66" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="44" y="92" width="40" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="44" y="108" width="60" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="44" y="122" width="40" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /><rect x="132" y="26" width="150" height="150" rx="8" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="132" y="26" width="150" height="16" rx="8" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="142" y="32" width="40" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="142" y="52" width="130" height="48" rx="5" fill="var(--cv-brandsoft)" stroke="none" /><rect x="142" y="110" width="90" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="142" y="124" width="120" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="142" y="134" width="100" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="142" y="148" width="48" height="14" rx="7" fill="var(--cv-brand)" stroke="none" /><rect x="294" y="34" width="72" height="142" rx="12" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="300" y="44" width="60" height="40" rx="5" fill="var(--cv-brandsoft)" stroke="none" /><rect x="302" y="94" width="46" height="5" rx="2.5" fill="var(--cv-ink)"/><rect x="302" y="106" width="56" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="302" y="116" width="42" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="302" y="134" width="38" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /></svg><span class="step__cover-kicker">SETUP FIGMA · 04</span><img class="step__cover-bot" src="img/robotina/apontando.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2075,24 +2425,23 @@
             <span class="step__index"></span>
             <h3 class="step__title">Conectando telas</h3>
             <div class="step__placeholder-text">
-              <p>
-                Para conectar uma tela a outra dentro da section devemos utilizar o elemento <em style="font-style:italic;color:var(--main-text)">Notes-Action</em> + <em style="font-style:italic;color:var(--main-text)">Conector</em>.
-              </p>
-              <br/>
-              <p>
-               Para utilizar o conector abra o arquivo da biblioteca <em style="font-style:italic;color:var(--main-text)">Assets</em> copie o elemento do conector e cole na tela que deseja criar a conexão. Depois, posicione o conector de forma que uma ponta fique sobre a tela de origem e a outra ponta sobre a tela de destino.
-              </p> 
+              <p>Conecte telas dentro da section com <em style="font-style:italic;color:var(--main-text)">Notes-Action</em> + <em style="font-style:italic;color:var(--main-text)">Conector</em>.</p>
+              <ul class="step__list">
+                <li>Na biblioteca <em style="font-style:italic;color:var(--main-text)">Assets</em>, copie o conector e cole na tela.</li>
+                <li>Posicione uma ponta sobre a tela de origem e a outra sobre a de destino.</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/setup-05a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Conectando telas" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="50" y="56" width="110" height="100" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="60" y="66" width="90" height="50" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="60" y="126" width="60" height="5" rx="2.5" fill="var(--cv-ink)"/><rect x="60" y="138" width="80" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="250" y="56" width="110" height="100" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="260" y="66" width="90" height="50" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="260" y="126" width="60" height="5" rx="2.5" fill="var(--cv-ink)"/><rect x="260" y="138" width="80" height="5" rx="2.5" fill="var(--cv-mute)"/><path d="M160 106 C 195 106, 215 106, 248 106" stroke="var(--cv-brand)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-dasharray="1 6"/><path d="M160 106 C 195 106, 215 106, 248 106" stroke="var(--cv-brand)" stroke-width="2" fill="none"/><polygon points="248,106 240,101 240,111" fill="var(--cv-brand)"/><circle cx="160" cy="106" r="5" fill="#fff" stroke="var(--cv-brand)" stroke-width="2"/><rect x="176" y="84" width="56" height="16" rx="8" fill="var(--cv-brand)" stroke="none" /><text x="186" y="95.5" font-size="8" font-weight="700" fill="#fff" font-family="IBM Plex Sans,sans-serif">Action</text></svg><span class="step__cover-kicker">SETUP FIGMA · 05</span><img class="step__cover-bot" src="img/robotina/apontando.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2108,58 +2457,62 @@
           <div class="callout__label">Boa prática</div>
           <h4 class="callout__title">Conferiu tudo? Faça o handshake com o DS.</h4>
           <p class="callout__text">
-            Antes de continuar com sua tarefa, peça uma revisão rápida do time de design system.
-            Esse alinhamento de 5 minutos economiza horas de retrabalho depois.
+            Antes de continuar, peça uma revisão rápida do time de Design System.
+            Esses 5 minutos economizam horas de retrabalho.
           </p>
         </div>
       </div>
+      </div><!-- /.story__main -->
     </div>
   </section>
 
-  <!-- ============== SECTION 04 — ORGANIZAÇÃO TELAS ============== -->
+  <!-- ============== SECTION 02 — ORGANIZAÇÃO TELAS ============== -->
   <section class="section" id="organizacao">
     <div class="container">
+      <div class="story__side">
       <div class="section__head reveal">
         <div class="section__number">
           <span>SEÇÃO</span>
-          <span class="section__number-marker">03</span>
+          <span class="section__number-marker">02</span>
           <span class="section__number-line"></span>
         </div>
         <div>
           <h2 class="section__title">Como organizar <em>as telas</em>.</h2>
           <p class="section__intro">
-            Padrão visual e espacial das nossas pranchetas. Aqui você vai encontrar como
-            agrupar fluxos, nomear seções e manter a leitura clara para o time inteiro.
+            Padrão visual e espacial das nossas pranchetas: como agrupar fluxos,
+            nomear seções e manter a leitura clara para o time todo.
           </p>
         </div>
       </div>
 
+      <img class="section__bot" src="img/robotina/caixa.svg" alt="" width="672" height="606">
+      </div>
+
+      <div class="story__main">
       <div class="steps">
         <article class="step reveal">
           <div class="step__text">
             <span class="step__index"></span>
             <h3 class="step__title">Montando as telas</h3>
             <div class="step__placeholder-text">
-              <p>
-                Ao montar as telas, siga os <em style="font-style:italic;color:var(--main-text)">padrões</em> de <em style="font-style:italic;color:var(--main-text)">espaçamento</em> e <em style="font-style:italic;color:var(--main-text)">nomenclatura de camadas</em> definidos pelo Design System para garantir consistência visual, organização e facilidade de manutenção.
-              </p><br/>
-              <p>
-                Comece criando um frame com as dimensões do dispositivo para o qual a interface será desenvolvida. Em seguida, utilize os componentes disponíveis na aba Assets da <em style="font-style:italic;color:var(--main-text)">biblioteca oficial</em> e monte a tela a partir desses elementos.
-              </p><br/>
-              <p>
-                Caso nenhum componente existente atenda à necessidade do projeto, o Design System permite a <em style="font-style:italic;color:var(--main-text)">criação de novas soluções</em>. Nesse cenário, desenvolva o novo elemento seguindo os padrões estabelecidos, organize a proposta de forma clara e compartilhe-a com o time de Design System para avaliação e possível incorporação à biblioteca.
-              </p>
+              <p>Siga os padrões de <em style="font-style:italic;color:var(--main-text)">espaçamento</em> e <em style="font-style:italic;color:var(--main-text)">nomenclatura de camadas</em> do Design System.</p>
+              <ul class="step__list">
+                <li>Crie um frame com as dimensões do dispositivo.</li>
+                <li>Monte a tela com os componentes da aba <em style="font-style:italic;color:var(--main-text)">Assets</em> da <em style="font-style:italic;color:var(--main-text)">biblioteca oficial</em>.</li>
+                <li>Nenhum componente atende? Desenvolva o novo elemento nos padrões, organize a proposta e envie ao time de Design System.</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/screens-01a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Montando as telas" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="120" y="16" width="160" height="176" rx="16" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="128" y="24" width="144" height="22" rx="6" fill="var(--cv-brand)" stroke="none" /><rect x="136" y="32" width="50" height="6" rx="2.5" fill="#fff"/><rect x="128" y="52" width="144" height="56" rx="6" fill="var(--cv-brandsoft)" stroke="none" /><rect x="138" y="118" width="70" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="138" y="130" width="110" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="128" y="144" width="68" height="18" rx="9" fill="var(--cv-brand)" stroke="none" /><rect x="204" y="144" width="68" height="18" rx="9" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="128" y="168" width="144" height="16" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="30" y="40" width="72" height="22" rx="6" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="40" y="48" width="30" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="30" y="70" width="72" height="22" rx="6" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="40" y="78" width="40" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="30" y="100" width="72" height="22" rx="6" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="40" y="108" width="34" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="298" y="70" width="72" height="22" rx="6" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="308" y="78" width="40" height="6" rx="2.5" fill="var(--cv-ink)"/></svg><span class="step__cover-kicker">TELAS · 01</span><img class="step__cover-bot" src="img/robotina/voando.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2171,20 +2524,29 @@
             <span class="step__index"></span>
             <h3 class="step__title">Espaçamento</h3>
             <div class="step__placeholder-text">
-              <p>
-                Para manter o espaçamento padrão em todas as telas, siga as seguintes diretrizes. Quando o primeiro elemento da página for um Hero ou um Menu/Header, ele deve permanecer alinhado ao topo da tela. O elemento seguinte deve respeitar um espaçamento de <em style="font-style:italic;color:var(--main-text)">40px</em> em web e <em style="font-style:italic;color:var(--main-text)">32px</em> em mobile. Para os demais conteúdos da página, o espaçamento entre seções deve ser de <em style="font-style:italic;color:var(--main-text)">80px</em> em web e <em style="font-style:italic;color:var(--main-text)">64px</em> em mobile. Já os blocos dentro de uma mesma seção devem manter um espaçamento de <em style="font-style:italic;color:var(--main-text)">48px</em> entre si. Por fim, os elementos internos de um mesmo bloco podem utilizar espaçamentos de <em style="font-style:italic;color:var(--main-text)">16px</em> ou <em style="font-style:italic;color:var(--main-text)">24px</em>, de acordo com a necessidade de organização e hierarquia das informações.
-              </p>
+              <p>Use sempre estes valores:</p>
+              <table class="spacing-table">
+                <thead><tr><th>Onde</th><th>Web</th><th>Mobile</th></tr></thead>
+                <tbody>
+                  <tr><td>Primeiro elemento (Hero ou Menu/Header)</td><td colspan="2">alinhado ao topo da tela</td></tr>
+                  <tr><td>Elemento seguinte ao primeiro</td><td>40px</td><td>32px</td></tr>
+                  <tr><td>Entre seções da página</td><td>80px</td><td>64px</td></tr>
+                  <tr><td>Entre blocos da mesma seção</td><td colspan="2">48px</td></tr>
+                  <tr><td>Elementos internos de um bloco</td><td colspan="2">16px ou 24px, conforme a hierarquia</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/screens-02a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Espaçamento" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="80" y="22" width="240" height="166" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="94" y="34" width="212" height="28" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="94" y="78" width="212" height="44" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="94" y="138" width="212" height="40" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="94" y="62" width="212" height="16" fill="var(--cv-brand)" opacity=".14"/><line x1="200" y1="62" x2="200" y2="78" stroke="var(--cv-brand)" stroke-width="1.5"/><rect x="94" y="122" width="212" height="16" fill="var(--cv-brand)" opacity=".14"/><line x1="200" y1="122" x2="200" y2="138" stroke="var(--cv-brand)" stroke-width="1.5"/><rect x="208" y="64" width="28" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /><text x="214" y="73" font-size="8" font-weight="700" fill="#fff" font-family="IBM Plex Sans,sans-serif">24</text><rect x="208" y="124" width="28" height="12" rx="6" fill="var(--cv-brand)" stroke="none" /><text x="214" y="133" font-size="8" font-weight="700" fill="#fff" font-family="IBM Plex Sans,sans-serif">16</text><line x1="306" y1="34" x2="306" y2="62" stroke="var(--cv-brand)" stroke-width="1.5"/></svg><span class="step__cover-kicker">TELAS · 02</span><img class="step__cover-bot" src="img/robotina/observando.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2196,23 +2558,24 @@
             <span class="step__index"></span>
             <h3 class="step__title">Camadas e Auto Layout</h3>
             <div class="step__placeholder-text">
-              <p>
-                Ao nomear as camadas, utilize nomes que <em style="font-style:italic;color:var(--main-text)">representem</em> claramente o <em style="font-style:italic;color:var(--main-text)">conteúdo</em> ou a <em style="font-style:italic;color:var(--main-text)">função</em> de cada elemento. Evite criar camadas desnecessárias: agrupe elementos apenas quando houver uma necessidade real de organização ou estruturação.
-              </p><br/>
-              <p>
-                Priorize o uso de <em style="font-style:italic;color:var(--main-text)">Auto Layout</em> sempre que possível, pois ele facilita a manutenção e a adaptação dos layouts. Frames e Groups devem ser utilizados com cautela e apenas em situações específicas em que ofereçam uma vantagem prática. Na maioria dos casos, o Auto Layout deve ser a opção padrão para a construção das interfaces.
-              </p>
+              <p>Nomeie as camadas pelo que elas representam e use <em style="font-style:italic;color:var(--main-text)">Auto Layout</em> como padrão.</p>
+              <ul class="step__list">
+                <li>Nomes que indiquem o <em style="font-style:italic;color:var(--main-text)">conteúdo</em> ou a <em style="font-style:italic;color:var(--main-text)">função</em> do elemento.</li>
+                <li>Agrupe apenas quando houver necessidade real de organização.</li>
+                <li>Frames e Groups só em casos específicos, quando trouxerem vantagem prática.</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/screens-03a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Camadas e Auto Layout" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="40" y="22" width="170" height="166" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><text x="54" y="42" font-size="9" font-weight="700" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Layers</text><rect x="48" y="50" width="154" height="18" rx="4" fill="var(--cv-brandsoft)" stroke="none" /><rect x="58" y="55" width="8" height="8" rx="2" fill="var(--cv-brand)" stroke="none" /><text x="72" y="62.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Frame · Home</text><rect x="72" y="76" width="8" height="8" rx="2" fill="var(--cv-mute)" stroke="none" /><text x="86" y="83.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Header</text><rect x="72" y="97" width="8" height="8" rx="2" fill="var(--cv-mute)" stroke="none" /><text x="86" y="104.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Hero</text><rect x="86" y="118" width="8" height="8" rx="2" fill="var(--cv-mute)" stroke="none" /><text x="100" y="125.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Título</text><rect x="86" y="139" width="8" height="8" rx="2" fill="var(--cv-mute)" stroke="none" /><text x="100" y="146.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Botão CTA</text><rect x="72" y="160" width="8" height="8" rx="2" fill="var(--cv-mute)" stroke="none" /><text x="86" y="167.5" font-size="8.5" font-weight="500" fill="var(--cv-ink)" font-family="IBM Plex Sans,sans-serif">Cards</text><rect x="230" y="40" width="130" height="130" rx="10" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="240" y="52" width="110" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="240" y="80" width="110" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><rect x="240" y="108" width="110" height="22" rx="5" fill="var(--cv-bg)" stroke="var(--cv-line)" /><g stroke="var(--cv-brand)" stroke-width="1.5" fill="none"><path d="M300 76 v4 M300 102 v6"/></g><rect x="250" y="142" width="90" height="16" rx="8" fill="var(--cv-brand)" stroke="none" /><text x="258" y="153" font-size="8" font-weight="700" fill="#fff" font-family="IBM Plex Sans,sans-serif">Auto Layout ↓</text></svg><span class="step__cover-kicker">TELAS · 03</span><img class="step__cover-bot" src="img/robotina/pensativo.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2224,23 +2587,24 @@
             <span class="step__index"></span>
             <h3 class="step__title">Componentes</h3>
             <div class="step__placeholder-text">
-              <p>
-                Utilize exclusivamente os componentes da biblioteca aplicada ao arquivo. Não utilize componentes de bibliotecas de terceiros. Sempre que possível, priorize o uso dos componentes já existentes no Design System. Caso nenhuma solução disponível atenda à necessidade do projeto, elabore uma proposta de novo componente e valide-a com o time de Design System.
-              </p><br/>
-              <p>
-                Caso seja necessário alterar um componente além das configurações previstas em suas propriedades, não aplique modificações manuais diretamente na instância. Faça o detach do componente antes de realizar qualquer ajuste. Sempre que uma necessidade exigir mudanças na estrutura, comportamento ou aparência de um componente existente, documente a proposta e compartilhe-a com o time de Design System para avaliação e possível evolução do componente oficial.
-              </p>
+              <p>Use <em style="font-style:italic;color:var(--main-text)">somente</em> os componentes das bibliotecas ativas no arquivo, nunca de terceiros.</p>
+              <ul class="step__list">
+                <li>Priorize os componentes existentes e ajuste apenas pelas propriedades.</li>
+                <li>Não modifique a instância manualmente nem dê detach nas telas entregues.</li>
+                <li>Precisa de algo diferente? Documente a proposta e envie ao time de Design System.</li>
+              </ul>
             </div>
           </div>
           <div class="step__media step__media--gif" role="button" tabindex="0" data-gif="img/screens-04a.gif">
             <span class="step__media-expand" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
             <img class="step__media-img" alt="Componentes" style="object-fit: fill;">
+            <div class="step__cover" aria-hidden="true"><svg class="step__cover-art" viewBox="0 0 400 210" preserveAspectRatio="xMidYMid meet"><rect x="60" y="30" width="130" height="130" rx="12" fill="var(--cv-card)" stroke="var(--cv-line)" /><rect x="76" y="44" width="98" height="44" rx="6" fill="var(--cv-brandsoft)" stroke="none" /><rect x="76" y="98" width="60" height="6" rx="2.5" fill="var(--cv-ink)"/><rect x="76" y="110" width="90" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="76" y="126" width="50" height="16" rx="8" fill="var(--cv-brand)" stroke="none" /><rect x="200" y="20" width="22" height="22" rx="11" fill="#1f9d55" stroke="none" /><path d="M206 31 l4 4 l7 -8" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="220" y="70" width="130" height="90" rx="12" fill="var(--cv-card)" stroke="#d6453d" stroke-dasharray="5 4" stroke-width="1.5"/><rect x="234" y="86" width="60" height="6" rx="2.5" fill="var(--cv-mute)"/><rect x="234" y="98" width="90" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="234" y="108" width="70" height="5" rx="2.5" fill="var(--cv-mute)"/><rect x="318" y="56" width="22" height="22" rx="11" fill="#d6453d" stroke="none" /><path d="M324 62 l10 10 M334 62 l-10 10" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><text x="236" y="140" font-size="8.5" font-weight="700" fill="#d6453d" font-family="IBM Plex Sans,sans-serif">detach ✕</text></svg><span class="step__cover-kicker">TELAS · 04</span><img class="step__cover-bot" src="img/robotina/aplaudindo.svg" onerror="this.remove()" alt="" width="120" height="120"></div>
             <div class="step__media-gif-hint" aria-hidden="true">
               <div class="step__media-gif-hint__icon">
                 <svg viewBox="0 0 24 24" fill="none"><polygon points="5 3 19 12 5 21 5 3" fill="white"/></svg>
               </div>
               <div class="step__media-gif-hint__text">
-                <span class="step__media-gif-hint__label">Passe o mouse para ver como fazer</span>
+                <span class="step__media-gif-hint__label">Ver exemplo</span>
                 <span class="step__media-gif-hint__sub">clique para ampliar e controlar</span>
               </div>
             </div>
@@ -2257,13 +2621,13 @@
           <div class="callout__label">Não faça isso</div>
           <h4 class="callout__title">Nada de telas soltas, frames sem nome, cores e fontes aplicadas na mão ou "detach" em componentes.</h4>
           <p class="callout__text">
-            Esses comportamentos quebram a propagação de melhorias e
-            poluem a biblioteca. Siga as diretrizes e, se precisar de algo diferente, abra uma proposta — não dê Detach.
-            O mesmo vale para usar HEX direto na propriedade em vez do token.
+            Quebram a propagação de melhorias e poluem a biblioteca.
+            Precisa de algo diferente? Abra uma proposta. O mesmo vale para HEX direto em vez do token.
           </p>
         </div>
       </div>
 
+      </div><!-- /.story__main -->
     </div>
   </section>
 
@@ -2271,7 +2635,7 @@
   <footer class="footer" id="faq">
     <div class="container">
       <div class="footer__head reveal">
-        <span class="footer__eyebrow">04 · FAQ rápido</span>
+        <span class="footer__eyebrow">03 · FAQ rápido</span>
         <h2 class="footer__title">Dúvidas? <em>A gente responde.</em></h2>
       </div>
 
@@ -2285,7 +2649,7 @@
               <span class="faq__icon" aria-hidden="true"></span>
             </summary>
             <div class="faq__answer">
-              O Detach só deve ser utilizado quando você for montar uma proposta de mudança em um componente existe. Nesse caso sim, você pode dar detach para criar a nova proposta para o componente. 
+              Nas telas entregues, não. O detach só deve ser usado para montar uma proposta de mudança em um componente existente, em um espaço separado do fluxo. Depois, compartilhe a proposta com o time de Design System.
             </div>
           </details>
 
@@ -2309,10 +2673,51 @@
               Entre em contato pelo canal <span class="code-chip">Figma & Design Library</span> no Teams ou diretamente com algum membro do time. Toda proposta passa por revisão técnica e visual.
             </div>
           </details>
+
+          <details class="faq__item">
+            <summary class="faq__btn">
+              Quais bibliotecas preciso ativar no arquivo?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              Na aba <strong>Assets</strong>, ative sempre Frequency Foundation e Frequency Assets. Além delas, ative Web Components (projetos web) ou Native Components (TV, Roku ou Mobile).
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary class="faq__btn">
+              Qual tema devo aplicar nas páginas?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              Em cada página com fluxos e telas, aplique os temas do projeto. Exemplo: para uma tela da SKY no modo dark, selecione Company-Type = Sky-Products e depois Sky-Products = SKY Dark.
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary class="faq__btn">
+              Posso usar componentes de outras bibliotecas?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              Não. Use exclusivamente os componentes das bibliotecas aplicadas ao arquivo, sem componentes de terceiros.
+            </div>
+          </details>
+
+          <details class="faq__item">
+            <summary class="faq__btn">
+              Nenhum componente atende à minha necessidade. O que faço?
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer">
+              Desenvolva o novo elemento seguindo os padrões do Design System, organize a proposta de forma clara e compartilhe com o time para avaliação e possível incorporação à biblioteca.
+            </div>
+          </details>
         </div>
 
         <!-- Contact card -->
         <aside class="contact-card reveal">
+          <img class="contact-card__bot" src="img/robotina/acenando.svg" onerror="this.remove()" alt="" width="672" height="606">
           <span class="contact-card__label">Time de Design System · online</span>
           <h3 class="contact-card__title">Fale com a gente quando precisar.</h3>
           <p class="contact-card__desc">
@@ -2331,19 +2736,27 @@
               <span class="contact-card__list-icon">✉️</span>
               <span class="contact-card__list-text">
                 <strong>Gabriel Sá</strong>
-                <span>gabriel.sa@terceiro-sky.com.br</span>
+                <span><a href="mailto:gabriel.sa@terceiro-sky.com.br">gabriel.sa@terceiro-sky.com.br</a></span>
               </span>
             </li>
             <li>
               <span class="contact-card__list-icon">✉️</span>
               <span class="contact-card__list-text">
                 <strong>Guilherme Gouvea</strong>
-                <span>guilherme.gouvea@terceiro-sky.com.br</span>
+                <span><a href="mailto:guilherme.gouvea@terceiro-sky.com.br">guilherme.gouvea@terceiro-sky.com.br</a></span>
               </span>
             </li>
           </ul>
         </aside>
       </div>
+
+      <p class="footer__feedback">Encontrou algo desatualizado ou confuso? Avise o time no canal <span class="code-chip">#Figma & Design Library</span> ou por e-mail.</p>
+
+      <nav class="endnav" aria-label="Voltar às seções">
+        <a href="#setup">Setup Figma</a>
+        <a href="#organizacao">Telas</a>
+        <a href="#top">Design Playbook</a>
+      </nav>
 
       <div class="bottom-strip">
         <div>DESIGN PLAYBOOK · © 2026</div>
@@ -2423,37 +2836,102 @@
   </div>
 
   <script>
+  /* ===== i18n — português (padrão), español, English ===== */
+  (function(){
+    var D={"Para":{"en":"For","es":"Para"},"Documentação interna · Atualizado em nov/2026": {"en": "Internal documentation · Updated Nov 2026", "es": "Documentación interna · Actualizado en nov/2026"}, "Setup Figma": {"en": "Figma Setup", "es": "Setup de Figma"}, "Telas": {"en": "Screens", "es": "Pantallas"}, "Tudo o que você precisa para configurar o ambiente, entender nossos padrões e entregar com consistência. Um único lugar para alinhar ferramentas, nomenclatura e processo.": {"en": "Everything you need to set up your environment, understand our standards and deliver with <em style=\"font-style:italic;color:var(--main-text)\">consistency</em>. One place to align tools, naming and process.", "es": "Todo lo que necesitas para configurar tu entorno, entender nuestros estándares y entregar con <em style=\"font-style:italic;color:var(--main-text)\">consistencia</em>. Un único lugar para alinear herramientas, nomenclatura y proceso."}, "Tempo de leitura": {"en": "Reading time", "es": "Tiempo de lectura"}, "~5 minutos": {"en": "~5 minutes", "es": "~5 minutos"}, "Time de Design": {"en": "Design team", "es": "Equipo de Diseño"}, "Mantido por": {"en": "Maintained by", "es": "Mantenido por"}, "Time de Design System": {"en": "Design System team", "es": "Equipo de Design System"}, "Começar pelo setup →": {"en": "Start with the setup <span aria-hidden=\"true\">→</span>", "es": "Empezar por el setup <span aria-hidden=\"true\">→</span>"}, "“Design é colaboração com método — bonito por consequência, consistente por princípio.”": {"en": "“Design is collaboration with method — beautiful by consequence, consistent by principle.”", "es": "“El diseño es colaboración con método — bello por consecuencia, consistente por principio.”"}, "SEÇÃO": {"en": "SECTION", "es": "SECCIÓN"}, "Setup do Figma — do zero ao dia 1.": {"en": "<em>Figma</em> setup — from zero to day 1.", "es": "Setup de <em>Figma</em> — de cero al día 1."}, "Deixe seu Figma pronto para o trabalho do time. Siga os passos na ordem — leva menos de 20 minutos.": {"en": "Get your Figma ready for the team's work. Follow the steps in order — it takes less than 20 minutes.", "es": "Deja tu Figma listo para el trabajo del equipo. Sigue los pasos en orden — toma menos de 20 minutos."}, "Bibliotecas": {"en": "Libraries", "es": "Bibliotecas"}, "Na aba Assets, confirme que estas bibliotecas estão ativas:": {"en": "In the <em style=\"font-style:italic;color:var(--main-text)\">Assets</em> tab, make sure these libraries are enabled:", "es": "En la pestaña <em style=\"font-style:italic;color:var(--main-text)\">Assets</em>, confirma que estas bibliotecas estén activas:"}, "Frequency Foundation e Frequency Assets (sempre)": {"en": "<em style=\"font-style:italic;color:var(--main-text)\">Frequency Foundation</em> and <em style=\"font-style:italic;color:var(--main-text)\">Frequency Assets</em> (always)", "es": "<em style=\"font-style:italic;color:var(--main-text)\">Frequency Foundation</em> y <em style=\"font-style:italic;color:var(--main-text)\">Frequency Assets</em> (siempre)"}, "Web Components para projetos web ou Native Components para projetos nativos (TV, Roku ou Mobile)": {"en": "<em style=\"font-style:italic;color:var(--main-text)\">Web Components</em> for web projects or <em style=\"font-style:italic;color:var(--main-text)\">Native Components</em> for native projects (TV, Roku or Mobile)", "es": "<em style=\"font-style:italic;color:var(--main-text)\">Web Components</em> para proyectos web o <em style=\"font-style:italic;color:var(--main-text)\">Native Components</em> para proyectos nativos (TV, Roku o Mobile)"}, "Assets · Bibliotecas": {"en": "Assets · Libraries", "es": "Assets · Bibliotecas"}, "SETUP FIGMA · 01": {"en": "FIGMA SETUP · 01", "es": "SETUP DE FIGMA · 01"}, "Ver exemplo": {"en": "See example", "es": "Ver ejemplo"}, "clique para ampliar e controlar": {"en": "click to enlarge and control", "es": "clic para ampliar y controlar"}, "Organizando as páginas": {"en": "Organizing the pages", "es": "Organizando las páginas"}, "A primeira página do arquivo é sempre a capa.": {"en": "The first page of the file is always the <em style=\"font-style:italic;color:var(--main-text)\">cover</em>.", "es": "La primera página del archivo es siempre la <em style=\"font-style:italic;color:var(--main-text)\">portada</em>."}, "Sem capa? Em Assets, adicione o componente Cover e preencha: [Nome do projeto] + [Nome da feature]": {"en": "No cover? In <em style=\"font-style:italic;color:var(--main-text)\">Assets</em>, add the <em style=\"font-style:italic;color:var(--main-text)\">Cover</em> component and fill in: <em style=\"font-style:italic;color:var(--main-text)\">[Project name] + [Feature name]</em>", "es": "¿Sin portada? En <em style=\"font-style:italic;color:var(--main-text)\">Assets</em>, agrega el componente <em style=\"font-style:italic;color:var(--main-text)\">Cover</em> y completa: <em style=\"font-style:italic;color:var(--main-text)\">[Nombre del proyecto] + [Nombre de la feature]</em>"}, "Crie as demais páginas do fluxo de trabalho.": {"en": "Create the remaining pages of the workflow.", "es": "Crea las demás páginas del flujo de trabajo."}, "Em cada página com telas, aplique os temas do projeto. Ex.: SKY dark → Company-Type = Sky-Products, depois Sky-Products = SKY Dark": {"en": "On each page with screens, apply the project themes. E.g.: SKY dark → <em style=\"font-style:italic;color:var(--main-text)\">Company-Type = Sky-Products</em>, then <em style=\"font-style:italic;color:var(--main-text)\">Sky-Products = SKY Dark</em>", "es": "En cada página con pantallas, aplica los temas del proyecto. Ej.: SKY dark → <em style=\"font-style:italic;color:var(--main-text)\">Company-Type = Sky-Products</em>, luego <em style=\"font-style:italic;color:var(--main-text)\">Sky-Products = SKY Dark</em>"}, "Páginas": {"en": "Pages", "es": "Páginas"}, "Capa": {"en": "Cover", "es": "Portada"}, "Fluxo · Home": {"en": "Flow · Home", "es": "Flujo · Home"}, "Fluxo · Checkout": {"en": "Flow · Checkout", "es": "Flujo · Checkout"}, "Componentes": {"en": "Components", "es": "Componentes"}, "SETUP FIGMA · 02": {"en": "FIGMA SETUP · 02", "es": "SETUP DE FIGMA · 02"}, "Organizando a section": {"en": "Organizing the section", "es": "Organizando la section"}, "Agrupe as telas de cada fluxo em uma section, nomeada conforme o fluxo.": {"en": "Group the screens of each flow in a <em style=\"font-style:italic;color:var(--main-text)\">section</em>, named after the flow.", "es": "Agrupa las pantallas de cada flujo en una <em style=\"font-style:italic;color:var(--main-text)\">section</em>, nombrada según el flujo."}, "Use os componentes de Templates da biblioteca Assets.": {"en": "Use the <em style=\"font-style:italic;color:var(--main-text)\">Templates</em> components from the <em style=\"font-style:italic;color:var(--main-text)\">Assets</em> library.", "es": "Usa los componentes de <em style=\"font-style:italic;color:var(--main-text)\">Templates</em> de la biblioteca <em style=\"font-style:italic;color:var(--main-text)\">Assets</em>."}, "No Files-Header, informe o nome do fluxo, um overview e as tags: data do último update, arquivo revisado e símbolos aplicados.": {"en": "In the <em style=\"font-style:italic;color:var(--main-text)\">Files-Header</em>, enter the flow name, an overview and the tags: last update date, reviewed file and applied symbols.", "es": "En el <em style=\"font-style:italic;color:var(--main-text)\">Files-Header</em>, indica el nombre del flujo, un overview y las tags: fecha de la última actualización, archivo revisado y símbolos aplicados."}, "Section · Fluxo Home": {"en": "Section · Home flow", "es": "Section · Flujo Home"}, "SETUP FIGMA · 03": {"en": "FIGMA SETUP · 03", "es": "SETUP DE FIGMA · 03"}, "Organizando as telas": {"en": "Organizing the screens", "es": "Organizando las pantallas"}, "Cada bloco segue a estrutura Files-Header (variação Page) + Note-Rules + Telas Web e Mobile.": {"en": "Each block follows the structure <em style=\"font-style:italic;color:var(--main-text)\">Files-Header</em> (Page variant) + <em style=\"font-style:italic;color:var(--main-text)\">Note-Rules</em> + <em style=\"font-style:italic;color:var(--main-text)\">Web and Mobile screens</em>.", "es": "Cada bloque sigue la estructura <em style=\"font-style:italic;color:var(--main-text)\">Files-Header</em> (variante Page) + <em style=\"font-style:italic;color:var(--main-text)\">Note-Rules</em> + <em style=\"font-style:italic;color:var(--main-text)\">Pantallas Web y Mobile</em>."}, "O título da página fica acima das telas do bloco.": {"en": "The page title sits above the block's screens.", "es": "El título de la página queda encima de las pantallas del bloque."}, "À esquerda, as notas: sobre a tela, regras específicas e componentes utilizados.": {"en": "On the left, the notes: about the screen, specific rules and components used.", "es": "A la izquierda, las notas: sobre la pantalla, reglas específicas y componentes utilizados."}, "À direita das notas, a tela web e, ao lado, a mesma tela em mobile.": {"en": "To the right of the notes, the web screen and, next to it, the same screen on mobile.", "es": "A la derecha de las notas, la pantalla web y, al lado, la misma pantalla en mobile."}, "Notas": {"en": "Notes", "es": "Notas"}, "SETUP FIGMA · 04": {"en": "FIGMA SETUP · 04", "es": "SETUP DE FIGMA · 04"}, "Conectando telas": {"en": "Connecting screens", "es": "Conectando pantallas"}, "Conecte telas dentro da section com Notes-Action + Conector.": {"en": "Connect screens within the section using <em style=\"font-style:italic;color:var(--main-text)\">Notes-Action</em> + <em style=\"font-style:italic;color:var(--main-text)\">Connector</em>.", "es": "Conecta pantallas dentro de la section con <em style=\"font-style:italic;color:var(--main-text)\">Notes-Action</em> + <em style=\"font-style:italic;color:var(--main-text)\">Conector</em>."}, "Na biblioteca Assets, copie o conector e cole na tela.": {"en": "In the <em style=\"font-style:italic;color:var(--main-text)\">Assets</em> library, copy the connector and paste it on the screen.", "es": "En la biblioteca <em style=\"font-style:italic;color:var(--main-text)\">Assets</em>, copia el conector y pégalo en la pantalla."}, "Posicione uma ponta sobre a tela de origem e a outra sobre a de destino.": {"en": "Place one end on the source screen and the other on the destination screen.", "es": "Posiciona un extremo sobre la pantalla de origen y el otro sobre la de destino."}, "SETUP FIGMA · 05": {"en": "FIGMA SETUP · 05", "es": "SETUP DE FIGMA · 05"}, "Boa prática": {"en": "Best practice", "es": "Buena práctica"}, "Conferiu tudo? Faça o handshake com o DS.": {"en": "Checked everything? Do the handshake with the DS.", "es": "¿Revisaste todo? Haz el handshake con el DS."}, "Antes de continuar, peça uma revisão rápida do time de Design System. Esses 5 minutos economizam horas de retrabalho.": {"en": "Before moving on, ask the Design System team for a quick review. Those 5 minutes save hours of rework.", "es": "Antes de continuar, pide una revisión rápida al equipo de Design System. Esos 5 minutos ahorran horas de retrabajo."}, "Como organizar as telas.": {"en": "How to organize <em>the screens</em>.", "es": "Cómo organizar <em>las pantallas</em>."}, "Padrão visual e espacial das nossas pranchetas: como agrupar fluxos, nomear seções e manter a leitura clara para o time todo.": {"en": "Visual and spatial standard for our artboards: how to group flows, name sections and keep the layout clear for the whole team.", "es": "Estándar visual y espacial de nuestros tableros: cómo agrupar flujos, nombrar secciones y mantener la lectura clara para todo el equipo."}, "Montando as telas": {"en": "Building the screens", "es": "Armando las pantallas"}, "Siga os padrões de espaçamento e nomenclatura de camadas do Design System.": {"en": "Follow the Design System's <em style=\"font-style:italic;color:var(--main-text)\">spacing</em> and <em style=\"font-style:italic;color:var(--main-text)\">layer naming</em> standards.", "es": "Sigue los estándares de <em style=\"font-style:italic;color:var(--main-text)\">espaciado</em> y <em style=\"font-style:italic;color:var(--main-text)\">nomenclatura de capas</em> del Design System."}, "Crie um frame com as dimensões do dispositivo.": {"en": "Create a frame with the device dimensions.", "es": "Crea un frame con las dimensiones del dispositivo."}, "Monte a tela com os componentes da aba Assets da biblioteca oficial.": {"en": "Build the screen with the components from the <em style=\"font-style:italic;color:var(--main-text)\">Assets</em> tab of the <em style=\"font-style:italic;color:var(--main-text)\">official library</em>.", "es": "Arma la pantalla con los componentes de la pestaña <em style=\"font-style:italic;color:var(--main-text)\">Assets</em> de la <em style=\"font-style:italic;color:var(--main-text)\">biblioteca oficial</em>."}, "Nenhum componente atende? Desenvolva o novo elemento nos padrões, organize a proposta e envie ao time de Design System.": {"en": "No component fits? Build the new element following the standards, organize the proposal and send it to the Design System team.", "es": "¿Ningún componente sirve? Desarrolla el nuevo elemento según los estándares, organiza la propuesta y envíala al equipo de Design System."}, "TELAS · 01": {"en": "SCREENS · 01", "es": "PANTALLAS · 01"}, "Espaçamento": {"en": "Spacing", "es": "Espaciado"}, "Use sempre estes valores:": {"en": "Always use these values:", "es": "Usa siempre estos valores:"}, "Onde": {"en": "Where", "es": "Dónde"}, "Primeiro elemento (Hero ou Menu/Header)": {"en": "First element (Hero or Menu/Header)", "es": "Primer elemento (Hero o Menú/Header)"}, "alinhado ao topo da tela": {"en": "aligned to the top of the screen", "es": "alineado a la parte superior de la pantalla"}, "Elemento seguinte ao primeiro": {"en": "Element following the first", "es": "Elemento siguiente al primero"}, "Entre seções da página": {"en": "Between page sections", "es": "Entre secciones de la página"}, "Entre blocos da mesma seção": {"en": "Between blocks in the same section", "es": "Entre bloques de la misma sección"}, "Elementos internos de um bloco": {"en": "Inner elements of a block", "es": "Elementos internos de un bloque"}, "16px ou 24px, conforme a hierarquia": {"en": "16px or 24px, depending on the hierarchy", "es": "16px o 24px, según la jerarquía"}, "TELAS · 02": {"en": "SCREENS · 02", "es": "PANTALLAS · 02"}, "Camadas e Auto Layout": {"en": "Layers and Auto Layout", "es": "Capas y Auto Layout"}, "Nomeie as camadas pelo que elas representam e use Auto Layout como padrão.": {"en": "Name layers after what they represent and use <em style=\"font-style:italic;color:var(--main-text)\">Auto Layout</em> as the default.", "es": "Nombra las capas por lo que representan y usa <em style=\"font-style:italic;color:var(--main-text)\">Auto Layout</em> como estándar."}, "Nomes que indiquem o conteúdo ou a função do elemento.": {"en": "Names that indicate the element's <em style=\"font-style:italic;color:var(--main-text)\">content</em> or <em style=\"font-style:italic;color:var(--main-text)\">function</em>.", "es": "Nombres que indiquen el <em style=\"font-style:italic;color:var(--main-text)\">contenido</em> o la <em style=\"font-style:italic;color:var(--main-text)\">función</em> del elemento."}, "Agrupe apenas quando houver necessidade real de organização.": {"en": "Group only when there is a real need for organization.", "es": "Agrupa solo cuando haya una necesidad real de organización."}, "Frames e Groups só em casos específicos, quando trouxerem vantagem prática.": {"en": "Frames and Groups only in specific cases, when they bring a practical advantage.", "es": "Frames y Groups solo en casos específicos, cuando aporten una ventaja práctica."}, "Botão CTA": {"en": "CTA button", "es": "Botón CTA"}, "TELAS · 03": {"en": "SCREENS · 03", "es": "PANTALLAS · 03"}, "Use somente os componentes das bibliotecas ativas no arquivo, nunca de terceiros.": {"en": "Use <em style=\"font-style:italic;color:var(--main-text)\">only</em> the components from the libraries enabled in the file, never third-party ones.", "es": "Usa <em style=\"font-style:italic;color:var(--main-text)\">solo</em> los componentes de las bibliotecas activas en el archivo, nunca de terceros."}, "Priorize os componentes existentes e ajuste apenas pelas propriedades.": {"en": "Prefer existing components and adjust only through properties.", "es": "Prioriza los componentes existentes y ajusta solo mediante propiedades."}, "Não modifique a instância manualmente nem dê detach nas telas entregues.": {"en": "Do not modify the instance manually or detach it on delivered screens.", "es": "No modifiques la instancia manualmente ni hagas detach en las pantallas entregadas."}, "Precisa de algo diferente? Documente a proposta e envie ao time de Design System.": {"en": "Need something different? Document the proposal and send it to the Design System team.", "es": "¿Necesitas algo diferente? Documenta la propuesta y envíala al equipo de Design System."}, "TELAS · 04": {"en": "SCREENS · 04", "es": "PANTALLAS · 04"}, "Não faça isso": {"en": "Don't do this", "es": "No hagas esto"}, "Nada de telas soltas, frames sem nome, cores e fontes aplicadas na mão ou \"detach\" em componentes.": {"en": "No loose screens, unnamed frames, hand-applied colors and fonts, or \"detach\" on components.", "es": "Nada de pantallas sueltas, frames sin nombre, colores y fuentes aplicados a mano ni \"detach\" en componentes."}, "Quebram a propagação de melhorias e poluem a biblioteca. Precisa de algo diferente? Abra uma proposta. O mesmo vale para HEX direto em vez do token.": {"en": "They break the propagation of improvements and pollute the library. Need something different? Open a proposal. The same goes for raw HEX instead of the token.", "es": "Rompen la propagación de mejoras y ensucian la biblioteca. ¿Necesitas algo diferente? Abre una propuesta. Lo mismo vale para HEX directo en lugar del token."}, "03 · FAQ rápido": {"en": "03 · Quick FAQ", "es": "03 · FAQ rápido"}, "Dúvidas? A gente responde.": {"en": "Questions? <em>We answer.</em>", "es": "¿Dudas? <em>Nosotros respondemos.</em>"}, "Posso dar detach em um componente do Design System?": {"en": "Can I detach a Design System component? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "¿Puedo hacer detach de un componente del Design System? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Nas telas entregues, não. O detach só deve ser usado para montar uma proposta de mudança em um componente existente, em um espaço separado do fluxo. Depois, compartilhe a proposta com o time de Design System.": {"en": "On delivered screens, no. Detach should only be used to build a change proposal for an existing component, in a space separate from the flow. Then share the proposal with the Design System team.", "es": "En las pantallas entregadas, no. El detach solo debe usarse para armar una propuesta de cambio en un componente existente, en un espacio separado del flujo. Luego, comparte la propuesta con el equipo de Design System."}, "Encontrei um bug ou inconsistência no Design System. E agora?": {"en": "I found a bug or inconsistency in the Design System. Now what? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "Encontré un bug o inconsistencia en el Design System. ¿Y ahora? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Reporte direto no canal #Figma & Design Library com print, link do arquivo e descrição do comportamento esperado. Ou entre em contato direto com o time de Design System.": {"en": "Report it directly in the channel <span class=\"code-chip\">#Figma &amp; Design Library</span> with a screenshot, the file link and a description of the expected behavior. Or contact the Design System team directly.", "es": "Repórtalo directamente en el canal <span class=\"code-chip\">#Figma &amp; Design Library</span> con captura, enlace del archivo y descripción del comportamiento esperado. O contacta directamente al equipo de Design System."}, "Como sugiro uma evolução para o Design System?": {"en": "How do I suggest an evolution for the Design System? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "¿Cómo sugiero una evolución para el Design System? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Entre em contato pelo canal Figma & Design Library no Teams ou diretamente com algum membro do time. Toda proposta passa por revisão técnica e visual.": {"en": "Reach out through the <span class=\"code-chip\">Figma &amp; Design Library</span> channel on Teams or directly to a team member. Every proposal goes through technical and visual review.", "es": "Contacta por el canal <span class=\"code-chip\">Figma &amp; Design Library</span> en Teams o directamente a algún miembro del equipo. Toda propuesta pasa por revisión técnica y visual."}, "Quais bibliotecas preciso ativar no arquivo?": {"en": "Which libraries do I need to enable in the file? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "¿Qué bibliotecas necesito activar en el archivo? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Na aba Assets, ative sempre Frequency Foundation e Frequency Assets. Além delas, ative Web Components (projetos web) ou Native Components (TV, Roku ou Mobile).": {"en": "In the <strong>Assets</strong> tab, always enable Frequency Foundation and Frequency Assets. In addition, enable Web Components (web projects) or Native Components (TV, Roku or Mobile).", "es": "En la pestaña <strong>Assets</strong>, activa siempre Frequency Foundation y Frequency Assets. Además, activa Web Components (proyectos web) o Native Components (TV, Roku o Mobile)."}, "Qual tema devo aplicar nas páginas?": {"en": "Which theme should I apply to the pages? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "¿Qué tema debo aplicar en las páginas? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Em cada página com fluxos e telas, aplique os temas do projeto. Exemplo: para uma tela da SKY no modo dark, selecione Company-Type = Sky-Products e depois Sky-Products = SKY Dark.": {"en": "On each page with flows and screens, apply the project themes. Example: for a SKY screen in dark mode, select Company-Type = Sky-Products and then Sky-Products = SKY Dark.", "es": "En cada página con flujos y pantallas, aplica los temas del proyecto. Ejemplo: para una pantalla de SKY en modo dark, selecciona Company-Type = Sky-Products y luego Sky-Products = SKY Dark."}, "Posso usar componentes de outras bibliotecas?": {"en": "Can I use components from other libraries? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "¿Puedo usar componentes de otras bibliotecas? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Não. Use exclusivamente os componentes das bibliotecas aplicadas ao arquivo, sem componentes de terceiros.": {"en": "No. Use only the components from the libraries applied to the file, with no third-party components.", "es": "No. Usa exclusivamente los componentes de las bibliotecas aplicadas al archivo, sin componentes de terceros."}, "Nenhum componente atende à minha necessidade. O que faço?": {"en": "No component meets my need. What do I do? <span aria-hidden=\"true\" class=\"faq__icon\"></span>", "es": "Ningún componente atiende mi necesidad. ¿Qué hago? <span aria-hidden=\"true\" class=\"faq__icon\"></span>"}, "Desenvolva o novo elemento seguindo os padrões do Design System, organize a proposta de forma clara e compartilhe com o time para avaliação e possível incorporação à biblioteca.": {"en": "Build the new element following the Design System standards, organize the proposal clearly and share it with the team for review and possible inclusion in the library.", "es": "Desarrolla el nuevo elemento siguiendo los estándares del Design System, organiza la propuesta de forma clara y compártela con el equipo para su evaluación y posible incorporación a la biblioteca."}, "Time de Design System · online": {"en": "Design System team · online", "es": "Equipo de Design System · online"}, "Fale com a gente quando precisar.": {"en": "Talk to us when you need to.", "es": "Habla con nosotros cuando lo necesites."}, "Estamos aqui para tirar dúvidas, revisar contribuições e manter o sistema vivo. Não trave — chama.": {"en": "We're here to answer questions, review contributions and keep the system alive. Don't get stuck — ping us.", "es": "Estamos aquí para resolver dudas, revisar contribuciones y mantener el sistema vivo. No te trabes — escríbenos."}, "Canal no Teams": {"en": "Teams channel", "es": "Canal en Teams"}, "Encontrou algo desatualizado ou confuso? Avise o time no canal #Figma & Design Library ou por e-mail.": {"en": "Found something outdated or confusing? Let the team know in the channel <span class=\"code-chip\">#Figma &amp; Design Library</span> or by email.", "es": "¿Encontraste algo desactualizado o confuso? Avisa al equipo en el canal <span class=\"code-chip\">#Figma &amp; Design Library</span> o por e-mail."}, "mantido por design system team": {"en": "maintained by the design system team", "es": "mantenido por el design system team"}, "Carregando…": {"en": "Loading…", "es": "Cargando…"}, "Decodificando frames do GIF…": {"en": "Decoding GIF frames…", "es": "Decodificando frames del GIF…"}, "espaço play · ←→ frame · esc fechar": {"en": "<kbd>space</kbd> play · <kbd>←</kbd><kbd>→</kbd> frame · <kbd>esc</kbd> close", "es": "<kbd>espacio</kbd> play · <kbd>←</kbd><kbd>→</kbd> frame · <kbd>esc</kbd> cerrar"}};
+    var A={"Alternar tema": {"en": "Toggle theme", "es": "Cambiar tema"}, "Princípio": {"en": "Principle", "es": "Principio"}, "Voltar às seções": {"en": "Back to sections", "es": "Volver a las secciones"}, "Fechar (Esc)": {"en": "Close (Esc)", "es": "Cerrar (Esc)"}, "Linha do tempo do GIF": {"en": "GIF timeline", "es": "Línea de tiempo del GIF"}, "Frame anterior": {"en": "Previous frame", "es": "Frame anterior"}, "Frame anterior (←)": {"en": "Previous frame (←)", "es": "Frame anterior (←)"}, "Reproduzir ou pausar": {"en": "Play or pause", "es": "Reproducir o pausar"}, "Próximo frame": {"en": "Next frame", "es": "Siguiente frame"}, "Próximo frame (→)": {"en": "Next frame (→)", "es": "Siguiente frame (→)"}, "Reiniciar": {"en": "Restart", "es": "Reiniciar"}, "Reiniciar (R)": {"en": "Restart (R)", "es": "Reiniciar (R)"}, "Robotina, mascote do Design System": {"en": "Robotina, the Design System mascot", "es": "Robotina, la mascota del Design System"}, "Bibliotecas": {"en": "Libraries", "es": "Bibliotecas"}, "Organizando as páginas": {"en": "Organizing the pages", "es": "Organizando las páginas"}, "Organizando a section": {"en": "Organizing the section", "es": "Organizando la section"}, "Organizando as telas": {"en": "Organizing the screens", "es": "Organizando las pantallas"}, "Conectando telas": {"en": "Connecting screens", "es": "Conectando pantallas"}, "Montando as telas": {"en": "Building the screens", "es": "Armando las pantallas"}, "Espaçamento": {"en": "Spacing", "es": "Espaciado"}, "Camadas e Auto Layout": {"en": "Layers and Auto Layout", "es": "Capas y Auto Layout"}, "Componentes": {"en": "Components", "es": "Componentes"}};
+    var S={"hint": {"pt": "Ver exemplo", "en": "See example", "es": "Ver ejemplo"}, "loadingGif": {"pt": "Carregando GIF…", "en": "Loading GIF…", "es": "Cargando GIF…"}, "decoding": {"pt": "Decodificando frames…", "en": "Decoding frames…", "es": "Decodificando frames…"}, "pause": {"pt": "PAUSE", "en": "PAUSE", "es": "PAUSA"}, "linkTo": {"pt": "Link direto para", "en": "Direct link to", "es": "Enlace directo a"}, "stepsAria": {"pt": "Steps desta seção", "en": "Steps in this section", "es": "Steps de esta sección"}, "langAria": {"pt": "Idioma", "en": "Language", "es": "Idioma"}, "metaDesc": {"pt": "Guia interno do time de Design: setup do Figma, bibliotecas, organização de arquivos e telas, e padrões do Frequency Design System.", "en": "Internal Design team guide: Figma setup, libraries, file and screen organization, and Frequency Design System standards.", "es": "Guía interna del equipo de Diseño: setup de Figma, bibliotecas, organización de archivos y pantallas, y estándares del Frequency Design System."}};
+    var LANGS=['pt','es','en'], HTML_LANG={pt:'pt-BR',es:'es',en:'en'};
+    var cur='pt';
+    window.__t=function(k){ var o=S[k]; return o?(o[cur]||o.pt):''; };
+    var INL={em:1,strong:1,code:1,a:1,span:1,b:1,i:1,br:1,kbd:1,small:1,sup:1,tspan:1};
+    var SK={script:1,style:1};
+    var norm=function(s){return s.replace(/\s+/g,' ').trim();};
+    var units=[], attrs=[];
+    function hasText(el){ for(var n=el.firstChild;n;n=n.nextSibling){ if(n.nodeType===3&&n.nodeValue.trim()) return true; } return false; }
+    function inlineOnly(el){ var all=el.querySelectorAll('*'); for(var i=0;i<all.length;i++){ if(!INL[all[i].localName]) return false; } return true; }
+    function addUnit(el){
+      var key=norm(el.textContent); if(!D[key]) return;
+      var textOnly=!el.children.length;
+      units.push({el:el,key:key,textOnly:textOnly,node:textOnly?el.firstChild:null,orig:textOnly?el.firstChild.nodeValue:el.innerHTML,on:'pt'});
+    }
+    function walk(el){
+      for(var c=el.firstElementChild;c;c=c.nextElementSibling){
+        if(SK[c.localName]) continue;
+        ['alt','aria-label','title'].forEach(function(a){ var v=c.getAttribute&&c.getAttribute(a); if(v&&A[v.trim()]) attrs.push({el:c,attr:a,orig:v}); });
+        if(c.localName==='svg'){ c.querySelectorAll('text').forEach(addUnit); continue; }
+        if(hasText(c)&&inlineOnly(c)) addUnit(c); else walk(c);
+      }
+    }
+    walk(document.body);
+    function setText(u,t){ if(u.node&&u.node.parentNode===u.el){ u.node.nodeValue=t; } else { u.el.textContent=t; u.node=u.el.firstChild; } }
+    var meta=document.querySelector('meta[name="description"]');
+    function apply(lang){
+      cur=lang;
+      units.forEach(function(u){
+        var v=lang==='pt'?null:D[u.key][lang];
+        if(lang==='pt'){ if(u.on==='pt') return; if(u.textOnly) setText(u,u.orig); else u.el.innerHTML=u.orig; u.on='pt'; return; }
+        if(u.textOnly) setText(u,v.replace(/<[^>]+>/g,'')); else u.el.innerHTML=v;
+        u.on=lang;
+      });
+      attrs.forEach(function(x){ var v=lang==='pt'?x.orig:A[x.orig.trim()][lang]; x.el.setAttribute(x.attr,v); });
+      document.documentElement.setAttribute('lang',HTML_LANG[lang]);
+      if(meta) meta.setAttribute('content',window.__t('metaDesc'));
+      document.querySelectorAll('.lang__btn').forEach(function(b){ var on=b.getAttribute('data-lang')===lang; b.classList.toggle('is-active',on); b.setAttribute('aria-pressed',on?'true':'false'); });
+      var g=document.querySelector('.lang'); if(g) g.setAttribute('aria-label',window.__t('langAria'));
+      document.dispatchEvent(new CustomEvent('langchange',{detail:lang}));
+    }
+    function setLang(lang,persist){
+      if(LANGS.indexOf(lang)<0) lang='pt';
+      apply(lang);
+      if(persist){ try{ localStorage.setItem('playbook-lang',lang); }catch(e){} }
+    }
+    window.__setLang=setLang;
+    document.querySelectorAll('.lang__btn').forEach(function(b){ b.addEventListener('click',function(){ setLang(b.getAttribute('data-lang'),true); }); });
+    var init='pt';
+    try{ var q=new URLSearchParams(location.search).get('lang'); var st=localStorage.getItem('playbook-lang'); init=(LANGS.indexOf(q)>=0?q:(LANGS.indexOf(st)>=0?st:'pt')); }catch(e){}
+    function start(){ if(init!=='pt') setLang(init,false); else { document.documentElement.setAttribute('lang','pt-BR'); document.querySelectorAll('.lang__btn').forEach(function(b){ var on=b.getAttribute('data-lang')==='pt'; b.classList.toggle('is-active',on); b.setAttribute('aria-pressed',on?'true':'false'); }); } }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+  })();
+  </script>
+
+  <script>
     // ===== Theme toggle =====
     const toggle = document.getElementById('themeToggle');
     const label  = document.getElementById('themeLabel');
     const root   = document.documentElement;
 
-    function setTheme(t){
+    function setTheme(t, persist){
       root.setAttribute('data-theme', t);
       label.textContent = t.toUpperCase();
+      if (persist) { try { localStorage.setItem('playbook-theme', t); } catch(e){} }
     }
+    setTheme(root.getAttribute('data-theme') || 'dark', false);
     toggle.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      setTheme(next);
+      setTheme(next, true);
     });
 
-    // ===== GIF on hover (preview) + click to open player =====
+    // ===== Versão dos GIFs (muda quando um GIF for atualizado → evita cache antigo) =====
+    const GIF_VERSION = '20261109';
+    const withVersion = u => u + (u.includes('?') ? '&' : '?') + 'v=' + GIF_VERSION;
+
+    // ===== Dica em telas de toque =====
+    if (window.matchMedia('(hover: none)').matches) {
+      document.querySelectorAll('.step__media-gif-hint__label').forEach(l => l.textContent = __t('hint'));
+      document.querySelectorAll('.step__media-gif-hint__sub').forEach(l => l.textContent = 'abre em tela cheia com controles');
+    }
+
+    // ===== Clique abre o player do GIF =====
     document.querySelectorAll('.step__media--gif').forEach(el => {
       const img = el.querySelector('.step__media-img');
-      const gif = el.dataset.gif;
-
-      el.addEventListener('mouseenter', () => {
-        img.src = gif;
-        el.classList.add('is-playing');
-      });
-      el.addEventListener('mouseleave', () => {
-        img.removeAttribute('src');
-        el.classList.remove('is-playing');
-      });
+      const gif = withVersion(el.dataset.gif);
+      const poster = el.dataset.poster; // opcional: imagem do 1º frame (data-poster="img/xxx.jpg")
+      if (poster) img.src = poster;
 
       const open = () => {
         const article = el.closest('.step');
-        const title = article?.querySelector('.step__title')?.textContent.trim()
+        const title = article?.querySelector('.step__title')?.childNodes[0]?.textContent.trim()
                    || img.getAttribute('alt') || 'Visualização';
         GifPlayer.open(gif, title);
       };
@@ -2807,7 +3285,7 @@
       function setPlaying(on) {
         playing = on;
         playIcon.innerHTML = on ? ICON_PAUSE : ICON_PLAY;
-        playLbl.textContent = on ? 'PAUSE' : 'PLAY';
+        playLbl.textContent = on ? __t('pause') : 'PLAY';
         if (on) { lastTs = performance.now(); rafId = requestAnimationFrame(tick); }
         else if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       }
@@ -2924,7 +3402,7 @@
         titleEl.textContent = title || 'Visualização';
         fileEl.textContent = src;
         clip = null; renderer = null;
-        setLoading('Carregando GIF…');
+        setLoading(__t('loadingGif'));
 
         try {
           let entry = cache.get(src);
@@ -2936,7 +3414,7 @@
             const c = parseGIF(buf);
             const r = createRenderer(c, canvas);
             await r.prepare(pct => {
-              if (my === token) setLoading('Decodificando frames… ' + Math.round(pct * 100) + '%');
+              if (my === token) setLoading(__t('decoding') + ' ' + Math.round(pct * 100) + '%');
             });
             if (my !== token) return;
             entry = { clip: c, renderer: r };
@@ -3006,6 +3484,17 @@
       document.addEventListener('keydown', e => {
         if (!modal.classList.contains('is-open')) return;
         if (e.key === 'Escape') { close(); return; }
+        if (e.key === 'Tab') {
+          // focus trap: mantém o Tab dentro do modal
+          const f = [...modal.querySelectorAll('button, input, [href], [tabindex]:not([tabindex="-1"])')]
+            .filter(n => !n.disabled && n.offsetParent !== null);
+          if (!f.length) return;
+          const first = f[0], last = f[f.length - 1];
+          if (!modal.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+          else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+          return;
+        }
         if (!clip) return;
         if (e.key === ' ')               { e.preventDefault(); setPlaying(!playing); }
         else if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1); }
@@ -3031,7 +3520,121 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ===== Âncoras nos títulos dos passos =====
+    const usedIds = new Set();
+    document.querySelectorAll('.step__title').forEach(h => {
+      const base = h.textContent.trim().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'passo';
+      let id = base, i = 2;
+      while (usedIds.has(id) || document.getElementById(id)) id = base + '-' + i++;
+      usedIds.add(id);
+      h.id = id;
+      const a = document.createElement('a');
+      a.className = 'step__anchor';
+      a.href = '#' + id;
+      a.setAttribute('aria-label', __t('linkTo') + ' ' + h.textContent.trim());
+      a.textContent = '#';
+      h.appendChild(a);
+    });
+
+    // ===== Item ativo no menu (scrollspy) =====
+    const spyLinks = [...document.querySelectorAll('.nav__links a[href^="#"]')];
+    const spyMap = new Map(spyLinks.map(a => [a.getAttribute('href').slice(1), a]));
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          spyLinks.forEach(a => { a.classList.remove('is-active'); a.removeAttribute('aria-current'); });
+          const a = spyMap.get(e.target.id);
+          if (a) { a.classList.add('is-active'); a.setAttribute('aria-current', 'true'); }
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    spyMap.forEach((_, id) => { const t = document.getElementById(id); if (t) spy.observe(t); });
   </script>
 
+
+  <script>
+  /* ===== V7 — manifesto, chips da coluna grudada, sombra do header ===== */
+  (() => {
+    // manifesto: palavras se preenchem conforme o scroll
+    const mt = document.querySelector('.manifesto__text');
+    let words = [];
+    function buildManifesto() {
+      if (!mt) return;
+      words = [];
+      const raw = mt.textContent.trim().replace(/\s+/g, ' ').split(' ');
+      mt.setAttribute('aria-label', raw.join(' '));
+      mt.textContent = '';
+      raw.forEach((w, i) => { const s = document.createElement('span'); s.className = 'w'; s.setAttribute('aria-hidden', 'true'); s.textContent = w + (i < raw.length - 1 ? ' ' : ''); mt.appendChild(s); words.push(s); });
+    }
+    buildManifesto();
+    function fill() {
+      if (!words.length) return;
+      const r = mt.getBoundingClientRect(), vh = innerHeight;
+      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.55 + r.height)));
+      const n = Math.round(p * words.length);
+      words.forEach((w, i) => w.classList.toggle('on', i < n));
+    }
+    // chips de steps na coluna grudada
+    const chipGroups = [];
+    document.querySelectorAll('.section').forEach(sec => {
+      const side = sec.querySelector('.story__side'); if (!side) return;
+      const steps = [...sec.querySelectorAll('.step')];
+      const wrap = document.createElement('nav'); wrap.className = 'story__chips'; wrap.setAttribute('aria-label', __t('stepsAria'));
+      const links = steps.map(st => {
+        const h = st.querySelector('.step__title');
+        const a = document.createElement('a'); a.className = 'story__chip'; a.href = '#' + h.id; a.textContent = h.childNodes[0].textContent.trim();
+        wrap.appendChild(a); return { a, st };
+      });
+      side.querySelector('.section__head').after(wrap);
+      chipGroups.push(links);
+    });
+    // animação de "clique": a tab afunda e volta com mola
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    chipGroups.forEach(g => { g.cur = undefined; g.timer = 0; });
+    function setActive(g, cur) { g.forEach(({ a }) => a.classList.toggle('is-active', a === cur)); }
+    function clickTo(g, cur) {
+      clearTimeout(g.timer);
+      g.forEach(({ a }) => a.classList.remove('is-click'));
+      setActive(g, cur);
+      if (!cur) return;
+      void cur.offsetWidth; cur.classList.add('is-click');
+      g.timer = setTimeout(() => cur.classList.remove('is-click'), 900);
+    }
+    function spy() {
+      const line = innerHeight * 0.4;
+      chipGroups.forEach(g => {
+        let cur = null;
+        g.forEach(({ a, st }) => { const r = st.getBoundingClientRect(); if (r.top <= line && r.bottom > line) cur = a; });
+        if (cur === g.cur) return;
+        const first = g.cur === undefined; g.cur = cur;
+        if (first || reduce) setActive(g, cur); else clickTo(g, cur);
+      });
+    }
+    document.addEventListener('langchange', () => {
+      buildManifesto();
+      chipGroups.forEach(g => g.forEach(({ a, st }) => { a.textContent = st.querySelector('.step__title').childNodes[0].textContent.trim(); }));
+      document.querySelectorAll('.story__chips').forEach(w => w.setAttribute('aria-label', __t('stepsAria')));
+      document.querySelectorAll('.step__title').forEach(h => { const a = h.querySelector('.step__anchor'); if (a) a.setAttribute('aria-label', __t('linkTo') + ' ' + h.childNodes[0].textContent.trim()); });
+      tick();
+    });
+    let t = false;
+    const tick = () => { if (t) return; t = true; requestAnimationFrame(() => { t = false; fill(); spy(); }); };
+    addEventListener('scroll', tick, { passive: true }); addEventListener('resize', tick);
+    tick();
+  })();
+  </script>
+
+  <script>
+  (function(){
+    var nav=document.querySelector('.nav'); if(!nav) return;
+    var tk=false;
+    function upd(){ tk=false; nav.classList.toggle('is-scrolled', window.scrollY>24); }
+    addEventListener('scroll',function(){ if(!tk){ tk=true; requestAnimationFrame(upd); } },{passive:true});
+    upd();
+  })();
+  </script>
 </body>
 </html>
